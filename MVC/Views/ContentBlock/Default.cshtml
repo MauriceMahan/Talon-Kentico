@@ -1,6 +1,0 @@
-@model Telerik.Sitefinity.Frontend.ContentBlock.Mvc.Models.IContentBlockModel
-@using Telerik.Sitefinity.Frontend.Mvc.Helpers
-<div class="@Model.WrapperCssClass">
-    @Html.HtmlSanitize(Model.Content)
-    @{ if (Model.EnableSocialSharing) { @Html.SocialShareOptions(null); } }
-</div>
