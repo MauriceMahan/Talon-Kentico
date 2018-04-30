@@ -1,0 +1,78 @@
+@model Telerik.Sitefinity.Frontend.Mvc.Models.ContentDetailsViewModel
+
+@using Telerik.Sitefinity;
+@using Telerik.Sitefinity.Frontend.Mvc.Helpers;
+@using Telerik.Sitefinity.Web.DataResolving;
+
+<article class="blog-posts module detail @Model.CssClass">
+    <header class="header">
+        <h1>@Model.Item.Fields.Title</h1>
+        <ul class="meta">
+            <li class="meta-item author">
+                @Html.Resource("By")
+                @DataResolver.Resolve(@Model.Item.DataItem, "Author", null)
+            </li>
+
+            <li class="meta-item date">
+                @Model.Item.GetDateTime("PublicationDate", "MMM d, yyyy, HH:mm tt")
+            </li>
+        </ul>
+    </header>
+
+    <div>@Html.CommentsCount(string.Empty, @Model.Item.DataItem)</div>
+
+    @* <div>@Html.Raw(Model.Item.Fields.Summary)</div> *@
+
+    <div class="content">@Html.Raw(Model.Item.Fields.Content)</div>
+
+    @{
+        if (Model.EnableSocialSharing) {
+            var item = Model.Item.DataItem as Telerik.Sitefinity.Model.IHasTitle;
+            @Html.SocialShareOptions(item);
+        }
+    }
+
+    @Html.CommentsList(@Model.Item.DataItem)
+</article>
+
+<script type="application/ld+json">
+{
+    "@@context":"http://schema.org",
+    "@@type":"BlogPosting",
+    "@@id":"@Model.Item.DefaultUrl",
+    "headline":"@Model.Item.Fields.Title",
+    "articleBody": "@Html.Raw(Model.Item.Fields.Content)",
+    "mainEntityOfPage": {
+        "@@type": "WebPage",
+        "@@id": "@Model.Item.DefaultUrl"
+    },
+    "datePublished": "@Model.Item.GetDateTime("PublicationDate", "MMM d, yyyy, HH:mm tt")",
+    "dateModified": "@Model.Item.GetDateTime("LastModified", "MMM d, yyyy, HH:mm tt")",
+
+    @* Add site name and logo, and uncomment this out.
+    "publisher": {
+        "@@type": "Organization",
+        "name": "Google",
+        "logo": {
+            "@@type": "ImageObject",
+            "url": "https://google.com/logo.jpg"
+        }
+    },
+    *@
+
+    "author": {
+        "@@type": "Person",
+        "name": "@DataResolver.Resolve(@Model.Item.DataItem, "Author", null)"
+    }
+}
+</script>
+
+@if(@Model.Item.Fields.Image != null) {
+<script type="application/ld+json">
+{
+"@@context": "http://schema.org",
+"@@id": "@Model.Item.DefaultUrl",
+"image": "@Model.Item.Fields.Image.Fields.MediaUrl"
+}
+</script>
+}

@@ -1,0 +1,23 @@
+@model Telerik.Sitefinity.Frontend.Mvc.Models.ContentListViewModel
+
+@using Telerik.Sitefinity.Frontend.Mvc.Helpers;
+@using Telerik.Sitefinity.Modules.Pages;
+@using Telerik.Sitefinity.Frontend.Lists.Mvc.Models;
+
+@* @Html.Script(ScriptRef.JQuery) *@
+
+<div class="list-tool modules accordion-list @Model.CssClass">
+    @foreach (var item in Model.Items) {
+        <h3>@item.Fields.Title</h3>
+        <ul class="item-list" id="@item.Fields.Id-accordion">
+        @foreach (var listItem in ((ListViewModel)item).ListItemViewModel.Items) {
+            <li class="item">
+                <a href="#@listItem.Fields.Id-accordion" data-target="@listItem.Fields.Id-accordion" data-toggle="tab" data-parent="@item.Fields.Id-accordion">@listItem.Fields.Title</a>
+                <div class="item-content" id="@listItem.Fields.Id-accordion">@Html.HtmlSanitize((string)listItem.Fields.Content)</div>
+            </li>
+        }
+        </ul>
+    }
+</div>
+
+@* @Html.Script(Url.WidgetContent("Mvc/Scripts/Lists/lists.js")) *@

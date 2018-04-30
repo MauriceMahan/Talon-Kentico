@@ -1,0 +1,43 @@
+@model Telerik.Sitefinity.Frontend.Navigation.Mvc.Models.INavigationModel 
+
+@using Telerik.Sitefinity.Frontend.Mvc.Helpers;
+@using Telerik.Sitefinity.Frontend.Navigation.Mvc.Models; 
+@using Telerik.Sitefinity.Modules.Pages; 
+
+<nav class="footer-nav @Model.CssClass" role="navigation">
+    @* @Html.Action("GetView", new { viewName = "Dropdown", model= Model}) *@
+    <ul class="menu">
+        @foreach (var node in Model.Nodes) { 
+            @RenderRootLevelNode(node); 
+        }
+    </ul>
+</nav>
+
+
+@helper RenderRootLevelNode(NodeViewModel node) {
+    <li>
+        <a href="@node.Url" target="@node.LinkTarget"><strong>@node.Title</strong></a> 
+
+        @if(node.ChildNodes.Count > 0) {
+            <ul class="nav nav-stacked">
+                @foreach (var childNode in node.ChildNodes) { 
+                    @RenderSubLevelsRecursive(childNode) 
+                }
+            </ul>
+        }
+    </li>
+} 
+
+@helper RenderSubLevelsRecursive(NodeViewModel node) {
+<li>
+    <a href="@node.Url" target="@node.LinkTarget">@node.Title</a> 
+
+    @if(node.ChildNodes.Count > 0){
+        <ul class="nav">
+            @foreach (var childNode in node.ChildNodes) { 
+                @RenderSubLevelsRecursive(childNode) 
+            }
+        </ul>
+    }
+</li>
+}

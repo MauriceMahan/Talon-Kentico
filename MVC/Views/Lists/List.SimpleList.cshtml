@@ -1,0 +1,14 @@
+@model Telerik.Sitefinity.Frontend.Mvc.Models.ContentListViewModel
+@using Telerik.Sitefinity.Frontend.Lists.Mvc.Models;
+@using Telerik.Sitefinity.Frontend.Mvc.Helpers;
+
+<div class="list-tool modules simple-list @Model.CssClass">
+    @foreach (var item in Model.Items) {
+        <h3>@item.Fields.Title</h3>
+        <ul>
+            @foreach (var listItem in ((ListViewModel)item).ListItemViewModel.Items) {
+                <li>@listItem.Fields.Title</li>
+            }
+        </ul>
+    }
+</div>

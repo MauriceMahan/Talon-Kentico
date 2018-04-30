@@ -1,0 +1,48 @@
+@model Telerik.Sitefinity.Frontend.Mvc.Models.ContentListViewModel
+
+@using Telerik.Sitefinity;
+@using Telerik.Sitefinity.Frontend.Mvc.Helpers;
+@using Telerik.Sitefinity.Modules.Pages;
+@using Telerik.Sitefinity.Web.DataResolving;
+
+@* @Html.Script(ScriptRef.JQuery, "top", false) *@
+
+<div class="blog-posts module listing @Model.CssClass">
+    <ul class="item-list">
+        @foreach (var item in Model.Items) {
+			var navigateUrl = HyperLinkHelpers.GetDetailPageUrl(item, ViewBag.DetailsPageId, ViewBag.OpenInSamePage, Model.UrlKeyPrefix);
+
+            <li class="item">
+                <div class="item-content">
+                    <h2 class="title">
+                        <a href="@navigateUrl">@item.Fields.Title</a>
+                    </h2>
+
+                    <ul class="meta">
+                        <li class="meta-item author">
+                             @Html.Resource("By")
+                             @DataResolver.Resolve(item.DataItem, "Author", null)
+                        </li>
+                        <li class="meta-item date">
+                            @item.GetDateTime("PublicationDate", "MMM d, yyyy, HH:mm tt")
+                        </li>
+                    </ul>
+
+                    <div>@Html.Raw(item.Fields.Summary)</div>
+
+                    <div class="text-muted">
+                        @Html.CommentsCount((string)navigateUrl, item.DataItem)
+                    </div>
+
+                    <a href="@navigateUrl">@Html.Resource("FullStory")<span class="visually-hidden">: @item.Fields.Title</span></a>
+                </div>
+            </li>
+        }
+    </ul>
+
+    @if (Model.ShowPager) {
+        @Html.Action("Index", "ContentPager", new {
+               currentPage = Model.CurrentPage, totalPagesCount = Model.TotalPagesCount.Value, redirectUrlTemplate = ViewBag.RedirectPageUrlTemplate
+        })
+    }
+</div>

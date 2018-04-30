@@ -1,0 +1,19 @@
+@model Telerik.Sitefinity.Frontend.Mvc.Models.ContentListViewModel
+
+@using Telerik.Sitefinity.Frontend.Lists.Mvc.Models;
+@using Telerik.Sitefinity.Frontend.Mvc.Helpers;
+
+<div class="list-tool modules pages-list @Model.CssClass">
+    @foreach (var item in Model.Items) {
+        <h3>@item.Fields.Title</h3>
+        <ul>
+            @foreach (var listItem in ((ListViewModel)item).ListItemViewModel.Items) {
+                var navigateUrl = HyperLinkHelpers.GetDetailPageUrl(listItem, Guid.Empty, true, Model.UrlKeyPrefix);
+                <li>
+                    <a href="@navigateUrl" >@listItem.Fields.Title</a>
+                    @Html.CommentsCount((string)navigateUrl, listItem.DataItem)
+                </li>
+            }
+        </ul>
+    }
+</div>

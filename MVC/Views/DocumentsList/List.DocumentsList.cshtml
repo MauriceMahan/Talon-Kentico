@@ -1,0 +1,36 @@
+@model Telerik.Sitefinity.Frontend.Media.Mvc.Models.DocumentsList.DocumentsListViewModel
+
+@using System;
+@using Telerik.Sitefinity.Frontend.Mvc.Helpers;
+@using Telerik.Sitefinity.Frontend.Media.Mvc.Models.DocumentsList;
+
+<div class="documents module listing @Model.CssClass">
+    <ul class="item-list">
+	@foreach (var item in Model.Items) {
+		<li class="item">
+			<div class="aside">
+				<span class="icon-file icon-txt icon-md">
+					<span class="icon-txt-@(((DocumentItemViewModel)item).Extension)">@(((DocumentItemViewModel)item).Extension)</span>
+				</span>
+			</div>
+			<div class="item-content">
+				<a href="@HyperLinkHelpers.GetDetailPageUrl(item, ViewBag.DetailsPageId, ViewBag.OpenInSamePage, Model.UrlKeyPrefix)">
+					<strong>@item.Fields.Title</strong>
+				</a>
+				<span class="text-muted">(@(((DocumentItemViewModel)item).Extension))</span>
+
+				<div>
+					<a href="@item.Fields.MediaUrl" target="_blank">Download</a>
+					<span class="text-muted">(@(Math.Ceiling((double)item.Fields.TotalSize / 1024) + " KB"))</span>
+				</div>
+			</div>
+		</li>
+	}
+	</ul>
+</div>
+
+@if (Model.ShowPager) {
+	@Html.Action("Index", "ContentPager", new {
+		currentPage = Model.CurrentPage, totalPagesCount = Model.TotalPagesCount.Value, redirectUrlTemplate = ViewBag.RedirectPageUrlTemplate
+	})
+}

@@ -1,0 +1,35 @@
+@model Telerik.Sitefinity.Frontend.Mvc.Models.ContentListViewModel
+
+@using Telerik.Sitefinity;
+@using Telerik.Sitefinity.Frontend.Mvc.Helpers;
+@using Telerik.Sitefinity.Frontend.Media.Mvc.Helpers;
+@using Telerik.Sitefinity.Modules.Pages;
+@using Telerik.Sitefinity.Frontend.Media.Mvc.Models.ImageGallery;
+
+@*@Html.Script(ScriptRef.JQuery, "top")*@
+
+<div class="photo-gallery rotating">
+  @for (int i = 0; i < Model.Items.Count(); i++) {
+    var item = Model.Items.ElementAt(i);
+    var thumbnailViewModel = (ThumbnailViewModel)item;
+    var itemIndex = (Model.CurrentPage - 1) * ViewBag.ItemsPerPage + i + 1;
+    var detailPageUrl = ViewBag.OpenInSamePage ? HyperLinkHelpers.GetDetailPageUrl(item, ViewBag.DetailsPageId, ViewBag.OpenInSamePage, itemIndex) :
+          HyperLinkHelpers.GetDetailPageUrl(item, ViewBag.DetailsPageId, ViewBag.OpenInSamePage);
+
+    <div class="photo-gallery-item  @Model.CssClass">
+      <div>
+        <img src="@(((ThumbnailViewModel)item).ThumbnailUrl)" alt='@System.Text.RegularExpressions.Regex.Replace(item.Fields.AlternativeText, @"[^\w\d_-]", "")' />
+      </div>
+      <div>
+        <p>@item.Fields.Author</p>
+        <p>@item.Fields.Description</p>
+      </div>
+    </div>
+  }
+</div>
+
+@if (Model.ShowPager) {
+  @Html.Action("Index", "ContentPager", new {
+    currentPage = Model.CurrentPage, totalPagesCount = Model.TotalPagesCount.Value, redirectUrlTemplate = ViewBag.RedirectPageUrlTemplate
+  })
+}

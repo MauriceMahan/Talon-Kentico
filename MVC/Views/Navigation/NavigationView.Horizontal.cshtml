@@ -1,0 +1,50 @@
+@model Telerik.Sitefinity.Frontend.Navigation.Mvc.Models.INavigationModel
+@using Telerik.Sitefinity.Frontend.Mvc.Helpers;
+@using Telerik.Sitefinity.Frontend.Navigation.Mvc.Models;
+@using Telerik.Sitefinity.Modules.Pages;
+@*Add scripts and stylesheets
+@Html.Script(ScriptRef.JQuery, "top")
+@Html.Script(Url.WidgetContent("Mvc/Scripts/Bootstrap/js/bootstrap.min.js"), "top", false) *@
+@* @Html.Action("GetView", new { viewName = "Dropdown",  model= Model}) *@
+
+<nav class="main-nav nav-bar @Model.CssClass" id="site-navigation" role="navigation">
+    <button class="toggle-menu"><span><span class="visually-hidden">Menu</span></span></button>
+    <ul class="cm-menu">
+        @foreach (var node in Model.Nodes) { @RenderRootLevelNode(node); }
+    </ul>
+</nav>
+
+@*Here is specified the rendering for the root level*@
+@helper RenderRootLevelNode(NodeViewModel node) {
+    if (node.ChildNodes.Count > 0) {
+        <li>
+            <a href="@node.Url" target="@node.LinkTarget"><span>@node.Title</span></a>
+            <ul>@RenderSubLevelsRecursive(node)</ul>
+        </li>
+    } else {
+        <li><a href="@node.Url" target="@node.LinkTarget"><span>@node.Title</span></a></li>
+    }
+}
+
+@*Here is specified the rendering for all child levels*@
+@helper RenderSubLevelsRecursive(NodeViewModel node) {
+    foreach (var childNode in node.ChildNodes) {
+        if(childNode.ChildNodes.Count > 0) {
+             <li>
+                <a href="@childNode.Url" target="@childNode.LinkTarget"><span>@childNode.Title</span></a>
+                <ul>@RenderSubLevelsRecursive(childNode)</ul>
+            </li>
+        } else {
+            <li><a href="@childNode.Url" target="@childNode.LinkTarget"><span>@childNode.Title</span></a></li>
+        }
+    }
+}
+
+@*Resolves the class that will be added for each node depending whether it is selected*@
+@helper GetClass(NodeViewModel node) {
+    if (node.IsCurrentlyOpened) {
+        @Html.Raw("active");
+    } else if (node.HasChildOpen) {
+        @Html.Raw("active");
+    }
+}
