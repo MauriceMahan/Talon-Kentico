@@ -164,7 +164,39 @@
                 </div>
             </div>
 
+            <h3>SVGs</h3>
+            <div id="svg-list"></div>
         </div>
     </div>
 </div>
+<script>
+    var svgList = document.getElementById("svg-list"),
+        svgSymbols = document.querySelectorAll(".svg-legend svg symbol"),
+        i;
+
+    for (i = 0; i < svgSymbols.length; ++i) {
+        var newItem = document.createElement("div"),
+            newSvg = document.createElementNS("http://www.w3.org/2000/svg", "svg"),
+            newSvgUse = document.createElementNS("http://www.w3.org/2000/svg", "use"),
+            newItemTitle = document.createElement("div"),
+            newItemIdent = document.createElement("div"),
+            svgId = svgSymbols[i].getAttribute("id"),
+            svgIdText = document.createTextNode(`#${svgId}`),
+            svgTitle = document.createTextNode(svgSymbols[i].querySelector("title").textContent);
+
+        newItem.classList.add("item");
+        newItemTitle.classList.add("title");
+        newItemIdent.classList.add("ident");
+
+        newSvgUse.setAttributeNS("http://www.w3.org/1999/xlink", "xlink:href", `#${svgId}`);
+        newItemTitle.appendChild(svgTitle);
+        newItemIdent.appendChild(svgIdText);
+
+        newSvg.appendChild(newSvgUse);
+        newItem.appendChild(newSvg);
+        newItem.appendChild(newItemTitle);
+        newItem.appendChild(newItemIdent);
+        svgList.appendChild(newItem);
+    }
+</script>
 {% endblock %}
