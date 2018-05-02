@@ -12,6 +12,7 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
             - ClickNav.js - v0.9.8.4 - http://nickgoodrum-templates.idevdesign.net/templates/nav/
             - Slick Carousel - v1.8.1 - http://kenwheeler.github.io/slick/
             - Colorbox Popup - v1.6.4 - http://www.jacklmoore.com/colorbox/
+            - Focus Overlay - v0.9.3 - https://github.com/MauriceMahan/FocusOverlay/
    ****************************************************** */
 
 /*! CLICK NAVIGATION FUNCTIONALITY
@@ -4646,6 +4647,91 @@ $(".faux-select").each(function () {
         }
     });
 })(jQuery);
+
+/*! ________________
+*   ___  ____/_  __ \
+*   __  /_   _  / / /
+*   _  __/   / /_/ /
+*   /_/      \____/
+*   Focus Overlay
+*
+*  Version: 0.9.3
+*  Author: Maurice Mahan
+*  License: MIT
+*  Repo: https://github.com/MauriceMahan/FocusOverlay
+*/
+!function (e) {
+    "function" == typeof define && define.amd ? define(["jquery"], function (t) {
+        return e(t, window);
+    }) : "object" == (typeof module === 'undefined' ? 'undefined' : _typeof(module)) && module.exports ? module.exports = function (t, o) {
+        return void 0 === o && (o = "undefined" != typeof window ? require("jquery") : require("jquery")(t)), e(o, window), o;
+    } : e(jQuery, window);
+}(function (e, t) {
+    function o(t, o) {
+        var n = this;n.active = !1, n.$el = e(t), n.$focusBox = e("<div aria-hidden='true' />"), n.$previousTarget, n.$nextTarget, n.timeout = 0, n.inScope = !1, n.transitionEvent = n._whichTransitionEvent(), n.options = e.extend({}, e.fn.focusOverlay.defaults, o), n.onFocusHandler = e.proxy(n.onFocusHandler, n), n.createFocusBox = e.proxy(n.createFocusBox, n), n.onKeyDownHandler = e.proxy(n.onKeyDownHandler, n), n._repositionBox = e.proxy(n._repositionBox, n), n.moveFocusBox = e.proxy(n.moveFocusBox, n), n.cleanup = e.proxy(n.cleanup, n), n.stop = e.proxy(n.stop, n), n.destroy = e.proxy(n.destroy, n), n.init();
+    }o.prototype = { init: function init() {
+            var e = this;e.options.alwaysActive ? (e.active = !0, t.addEventListener("focus", e.onFocusHandler, !0)) : (t.addEventListener("keydown", e.onKeyDownHandler, !1), e.options.inactiveOnClick && t.addEventListener("mousedown", e.stop, !1)), e.createFocusBox(), e.$el.trigger("foInit", [e]);
+        }, onKeyDownHandler: function onKeyDownHandler(o) {
+            var n = this,
+                i = o.which;e.inArray(i, n.options.triggerKeys) >= 0 ? !1 === n.active && (n.active = !0, t.addEventListener("focus", n.onFocusHandler, !0)) : n.options.inactiveOnNonTriggerKey && n.stop();
+        }, createFocusBox: function createFocusBox() {
+            var e = this;e.$focusBox.appendTo(e.$el).attr("id", e.options.id).css({ position: "absolute", zIndex: e.options.zIndex, pointerEvents: "none" });
+        }, cleanup: function cleanup() {
+            var e = this;null != e.$nextTarget && (e.$previousTarget = e.$nextTarget, e.$previousTarget.removeClass(e.options.targetClass), e.transitionEvent && e.options.watchTransitionEnd && e.$previousTarget[0].removeEventListener(e.transitionEvent, e._repositionBox));
+        }, onFocusHandler: function onFocusHandler(t) {
+            var o = this,
+                n = e(t.target);if (o.cleanup(), n.closest(o.$el).length > 0) {
+                var i = o.$nextTarget,
+                    r = o.$previousTarget;if (o.inScope = !0, n.data("focus")) o.$nextTarget = e(n.data("focus")).first();else if (n.is("[data-focus-label]")) {
+                    var s = e("[for='" + n.attr("id") + "']");s.length < 1 && (s = n.closest("label")), o.$nextTarget = s;
+                } else {
+                    if (n.is("[data-focus-ignore]")) return;o.$nextTarget = n;
+                }clearTimeout(o.timeout), o.transitionEvent && o.options.watchTransitionEnd && o.$nextTarget[0].addEventListener(o.transitionEvent, o._repositionBox), o.$el.trigger("foBeforeMove", [o, r, i, o.$nextTarget]), o.moveFocusBox(o.$nextTarget);
+            } else o.options.alwaysActive ? o.inScope = !1 : (o.inScope = !1, o.stop());
+        }, stop: function stop() {
+            var e = this;e.active = !1, t.removeEventListener("focus", e.onFocusHandler, !0), e.cleanup(), e.$focusBox.removeClass(e.options.activeClass);
+        }, moveFocusBox: function moveFocusBox(e) {
+            var t = this;if (e.addClass(t.options.targetClass), e.length > 0 && e[0] instanceof Element) {
+                var o = t._getAbsoluteBoundingRect(e[0]),
+                    n = o.width,
+                    i = o.height,
+                    r = o.left,
+                    s = o.top;t.$focusBox.addClass(t.options.animatingClass).addClass(t.options.activeClass).css({ width: n, height: i, left: r, top: s }), t.timeout = setTimeout(function () {
+                    t.$focusBox.removeClass(t.options.animatingClass), t.options.inactiveAfterDuration && t.$focusBox.removeClass(t.options.activeClass), t.$el.trigger("foAfterMove", [t, t.$previousTarget, e]);
+                }, t.options.duration);
+            } else t.cleanup();
+        }, _repositionBox: function _repositionBox(t) {
+            var o = this,
+                n = e(t.target);o.moveFocusBox(n);
+        }, destroy: function destroy() {
+            var e = this;e.$el.removeData(), e.$focusBox.remove(), null != e.$previousTarget && e.$previousTarget.removeClass(e.options.targetClass), null != e.$nextTarget && e.$nextTarget.removeClass(e.options.targetClass), t.removeEventListener("focus", e.onFocusHandler, !0), t.removeEventListener("keydown", e.onKeyDownHandler, !1), t.removeEventListener("mousedown", e.stop, !1), e.$el.trigger("foDestroyed", [e]);
+        }, _getAbsoluteBoundingRect: function _getAbsoluteBoundingRect(e) {
+            var o = document,
+                n = t,
+                i = o.body,
+                r = void 0 !== n.pageXOffset ? n.pageXOffset : (o.documentElement || i.parentNode || i).scrollLeft,
+                s = void 0 !== n.pageYOffset ? n.pageYOffset : (o.documentElement || i.parentNode || i).scrollTop,
+                a = e.getBoundingClientRect();if (e !== i) for (var c = e.parentNode; c !== i && c;) {
+                r += c.scrollLeft, s += c.scrollTop, c = c.parentNode;
+            }return { bottom: a.bottom + s, height: a.height, left: a.left + r, right: a.right + r, top: a.top + s, width: a.width };
+        }, _whichTransitionEvent: function _whichTransitionEvent() {
+            var e,
+                t = document.createElement("fakeelement"),
+                o = { transition: "transitionend", OTransition: "oTransitionEnd", MozTransition: "transitionend", WebkitTransition: "webkitTransitionEnd" };for (e in o) {
+                if (void 0 !== t.style[e]) return o[e];
+            }
+        } }, e.fn.focusOverlay = function (t) {
+        var n = arguments;if (void 0 === t || "object" == (typeof t === 'undefined' ? 'undefined' : _typeof(t))) return this.each(function () {
+            e.data(this, "plugin_" + o) || e.data(this, "plugin_" + o, new o(this, t));
+        });if ("string" == typeof t && "_" !== t[0] && "init" !== t) {
+            if (0 == Array.prototype.slice.call(n, 1).length && -1 != e.inArray(t, e.fn.focusOverlay.getters)) {
+                var i = e.data(this[0], "plugin_" + o);return i[t].apply(i, Array.prototype.slice.call(n, 1));
+            }return this.each(function () {
+                var i = e.data(this, "plugin_" + o);i instanceof o && "function" == typeof i[t] && i[t].apply(i, Array.prototype.slice.call(n, 1));
+            });
+        }
+    }, e.fn.focusOverlay.getters = ["destroy"], e.fn.focusOverlay.defaults = { id: "focus-overlay", activeClass: "focus-overlay-active", animatingClass: "focus-overlay-animating", targetClass: "focus-overlay-target", zIndex: 9001, duration: 500, inactiveAfterDuration: !1, triggerKeys: [9, 36, 37, 38, 39, 40, 13, 32, 16, 17, 18, 27], inactiveOnNonTriggerKey: !0, inactiveOnClick: !0, alwaysActive: !1, watchTransitionEnd: !0 };
+});
 /* ================================================================
     UTILITY FUNCTIONS AND GLOBAL VARS
    ================================================================ */
@@ -4920,8 +5006,10 @@ if (/iPad|iPhone|iPod/g.test(navigator.userAgent)) {
     /** Click Navigation **/
     $(".main-nav").clickMenu();
 
-    /** Image Gallery **/
+    /** FocusOverlay **/
+    $("body").focusOverlay();
 
+    /** Image Gallery **/
     $('.photo-gallery.rotating').slick({
         dots: false,
         speed: 300,
@@ -5000,8 +5088,10 @@ if (/iPad|iPhone|iPod/g.test(navigator.userAgent)) {
         $this.find('.talon-tab-pane:first-child').show();
     });
 
-    /** Stop referrer Phishing hack */
-    $("a[target=_blank], a[target=new]").attr("rel", "noopener noreferrer");
+    /** Stop referrer Phishing hack + ADA */
+    $("a[target=_blank], a[target=new]").each(function () {
+        $(this).attr("rel", "noopener noreferrer").append("<span class='visually-hidden'>(Opens in a new window)</span>");
+    });
 
     talonUtil.setupToggles();
     talonUtil.setupScrollPointerBlocker();

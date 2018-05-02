@@ -3,18 +3,17 @@
 {% block pagetitle %} Homepage {% endblock %}
 
 {% block content %}
-<section class="hero">
+<section id="maincontent" class="hero" aria-label="Carousel">
     <div class="slider" data-slick='{"slidesToShow":1, "slidesToScroll":1, "arrows": true, "fade": true}'>
         <div class="slide-item" style="background-image:url(../images/placeholders/hero-image.jpg);">
-            <div class="slide-text">
-            </div>
+            <div class="slide-text">Slide Text Goes Here</div>
         </div>
         <div class="slide-item">
             <div class="slide-text">
-                <h3 class="title"></h3>
-                <p></p>
+                <h3 class="title">Slide Title Goes Here</h3>
+                <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Repellat nostrum nam quas ex odit laudantium nisi similique? Eligendi ullam repellendus sed perspiciatis beatae exercitationem quae, assumenda sequi, doloremque omnis animi.</p>
             </div>
         </div>
     </div>
 </section>
-{% endblock %}          
+{% endblock %}

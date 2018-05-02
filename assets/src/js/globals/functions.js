@@ -284,8 +284,10 @@ if (/iPad|iPhone|iPod/g.test(navigator.userAgent)) {
     /** Click Navigation **/
     $(".main-nav").clickMenu();
 
-    /** Image Gallery **/
+    /** FocusOverlay **/
+    $("body").focusOverlay();
 
+    /** Image Gallery **/
     $('.photo-gallery.rotating').slick({
         dots: false,
         speed: 300,
@@ -373,8 +375,12 @@ if (/iPad|iPhone|iPod/g.test(navigator.userAgent)) {
         $this.find('.talon-tab-pane:first-child').show();
     });
 
-    /** Stop referrer Phishing hack */
-    $("a[target=_blank], a[target=new]").attr("rel", "noopener noreferrer");
+    /** Stop referrer Phishing hack + ADA */
+    $("a[target=_blank], a[target=new]").each(function () {
+        $(this)
+            .attr("rel", "noopener noreferrer")
+            .append("<span class='visually-hidden'>(Opens in a new window)</span>");
+    });
 
 
     talonUtil.setupToggles();
