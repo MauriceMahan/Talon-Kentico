@@ -189,7 +189,7 @@ gulp.task('serve', ['sass', 'build-css', 'global-scripts', 'individual-scripts',
 
 
 // Compile only Task (No browsersync)
-gulp.task('default', ['sass', 'build-css', 'global-scripts', 'individual-scripts', 'images'], function(){
+gulp.task('default', ['sass', 'build-css', 'global-scripts', 'individual-scripts', 'images', 'nunjucks'], function(){
     mainWatch();
 });
 
