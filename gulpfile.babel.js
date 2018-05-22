@@ -74,19 +74,19 @@ var date = new Date(),
 
 // SASS - Sourcemap and compile
 gulp.task('sass', function() {
-    return gulp.src('assets/src/scss/*.scss')
+    return gulp.src('src/scss/*.scss')
         .pipe(plumber())
         .pipe(wait(1000))
         .pipe(sourcemaps.init())
             .pipe(sass().on('error', notify.onError("Error: <%= error.message %>")))
         .pipe(sourcemaps.write())
-        .pipe(gulp.dest('assets/src/css'))
+        .pipe(gulp.dest('src/css'))
 });
 
 
 // Main CSS - Autoprefix, minify, and rename
 gulp.task('build-css', function() {
-    return gulp.src('assets/src/css/main.css')
+    return gulp.src('src/css/main.css')
         .pipe(plumber({ errorHandler: onError }))
         .pipe(autoprefixer({
             browsers: ['last 6 versions'],
@@ -94,7 +94,7 @@ gulp.task('build-css', function() {
         }))
         .pipe(cssmin())
         .pipe(rename({suffix: '.min'}))
-        .pipe(gulp.dest('assets/dist/css'))
+        .pipe(gulp.dest('dist/css'))
         .pipe(notify(notifyGeneric))
         .pipe(reload({stream: true}));
 });
@@ -102,15 +102,15 @@ gulp.task('build-css', function() {
 
 // Global JS - Concatenate, babel, minify, and rename
 gulp.task('global-scripts', function() {
-    return gulp.src(['assets/src/js/globals/plugins.js', 'assets/src/js/globals/*.js'])
+    return gulp.src(['src/js/globals/plugins.js', 'src/js/globals/*.js'])
         .pipe(plumber({ errorHandler: onError }))
         .pipe(concat('all.js'))
         .pipe(babel({ compact:false }))
         .on('error', notify.onError("Error: <%= error.message %>"))
-        .pipe(gulp.dest('assets/dist/js'))
+        .pipe(gulp.dest('dist/js'))
         .pipe(rename('all.min.js'))
         .pipe(uglify())
-        .pipe(gulp.dest('assets/dist/js'))
+        .pipe(gulp.dest('dist/js'))
         .pipe(notify(notifyGeneric))
         .pipe(reload({stream: true}));
 });
@@ -118,13 +118,13 @@ gulp.task('global-scripts', function() {
 
 // Individual JS - Concatenate, babel, minify, and rename
 gulp.task('individual-scripts', function() {
-    return gulp.src(['assets/src/js/individual/*.js'])
+    return gulp.src(['src/js/individual/*.js'])
         .pipe(plumber({ errorHandler: onError }))
         .pipe(babel({ compact:false }))
         .on('error', notify.onError("Error: <%= error.message %>"))
         .pipe(uglify())
         .pipe(rename({ suffix: '.min' }))
-        .pipe(gulp.dest('assets/dist/js'))
+        .pipe(gulp.dest('dist/js'))
         .pipe(notify(notifyGeneric))
         .pipe(reload({stream: true}));
 });
@@ -132,20 +132,20 @@ gulp.task('individual-scripts', function() {
 
 // Images - minification
 gulp.task('images', function() {
-    return gulp.src('assets/src/images/**/*')
+    return gulp.src('src/images/**/*')
         .pipe(imagemin())
         .pipe(notify(notifyGeneric))
-        .pipe(gulp.dest('assets/dist/images'))
+        .pipe(gulp.dest('dist/images'))
 });
 
 
 // HTML - Templating
 gulp.task('nunjucks', function() {
-  return gulp.src('assets/src/templates/**/*.html')
+  return gulp.src('src/templates/**/*.html')
     .pipe(nunjucksRender({
-        path: ['assets/src/templates']
+        path: ['src/templates']
     }))
-    .pipe(gulp.dest('templates'))
+    .pipe(gulp.dest('dist/templates'))
     .pipe(reload({stream: true}));
 });
 
@@ -160,12 +160,12 @@ gulp.task('nunjucks', function() {
 
 // Base Watch Function
 var mainWatch = function () {
-    gulp.watch('assets/src/scss/**/*.scss', ['sass']);
-    gulp.watch('assets/src/css/main.css', ['build-css']);
-    gulp.watch('assets/src/js/**/*.js', ['global-scripts', 'individual-scripts']);
-    gulp.watch('assets/src/images/*', ['images']);
-    gulp.watch(["assets/src/templates/**/*.html"], ['nunjucks']);
-    gulp.watch(["assets/src/templates/pages/*.html"], ['nunjucks']);
+    gulp.watch('src/scss/**/*.scss', ['sass']);
+    gulp.watch('src/css/main.css', ['build-css']);
+    gulp.watch('src/js/**/*.js', ['global-scripts', 'individual-scripts']);
+    gulp.watch('src/images/*', ['images']);
+    gulp.watch(["src/templates/**/*.html"], ['nunjucks']);
+    gulp.watch(["src/templates/pages/*.html"], ['nunjucks']);
 };
 
 
@@ -176,20 +176,20 @@ gulp.task('serve', ['sass', 'build-css', 'global-scripts', 'individual-scripts',
             port: 8080
         },
         server: {
-            baseDir:["./","templates"]
+            baseDir:["./dist","dist/templates"]
             //directory:true
         },
-        files: "assets/dist/css/main.min.css"
+        files: "dist/css/main.min.css"
     });
 
     mainWatch();
 
-    gulp.watch("assets/dist/**/*.html").on('change', reload);
+    gulp.watch("dist/**/*.html").on('change', reload);
 });
 
 
 // Compile only Task (No browsersync)
-gulp.task('default', ['sass', 'build-css', 'global-scripts', 'individual-scripts', 'images'], function(){
+gulp.task('default', ['sass', 'build-css', 'global-scripts', 'individual-scripts', 'images', 'nunjucks'], function(){
     mainWatch();
 });
 
