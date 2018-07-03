@@ -4925,17 +4925,20 @@ $(".faux-select").each(function () {
         return a < b ? b : a;
     };
 
-    //For faux buttons, etc. to handle keyboard events such as space and enter on top of click/touch
+    /**
+    * a11yclick - Easily handle keyboard click events on non semantic button elements.
+    * https://github.com/svinkle/a11yclick
+    * @param {Object} event Click/keyboard event object.
+    * @returns {Boolean} Returns true or false depending on event type and code.
+    */
     talonUtil.a11yClick = function (event) {
         if (event.type === 'click' || event.type === 'touchstart') {
             return true;
-        } else if (event.type === 'keypress') {
-            var code = event.charCode || event.keyCode;
-
+        } else if (event.type === 'keypress' || event.type === 'keyup') {
+            var code = event.which || e.keyCode || 0;
             if (code === 32) {
                 event.preventDefault();
             }
-
             if (code === 32 || code === 13) {
                 return true;
             }
