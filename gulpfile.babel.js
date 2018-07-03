@@ -102,7 +102,12 @@ gulp.task('build-css', function() {
 
 // Global JS - Concatenate, babel, minify, and rename
 gulp.task('global-scripts', function() {
-    return gulp.src(['src/js/globals/plugins.js', 'src/js/globals/*.js'])
+    return gulp.src([
+            // Load in this order
+            'src/js/globals/jquery-1.12.4.min.js',
+            'src/js/globals/plugins.js',
+            'src/js/globals/*.js'
+        ])
         .pipe(plumber({ errorHandler: onError }))
         .pipe(concat('all.js'))
         .pipe(babel({ compact:false }))
