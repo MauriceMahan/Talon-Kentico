@@ -7,9 +7,6 @@
    ****************************************************** */
 
 
-
-
-
 /* ================================================================
    Variables / Utilities / Globals
    ================================================================ */
@@ -37,18 +34,12 @@
 @import "globals/animations";
 
 
-
-
-
 /* ================================================================
    Templates
    ================================================================ */
 
 // Base Template
 @import "templates/_base";
-
-
-
 
 
 /* ================================================================
@@ -65,27 +56,19 @@
 //@import "components/navigation/clickMenu-theme";
 @import "components/navigation/footerNav";
 @import "components/navigation/sectionNav";
-@import "components/navigation/siteMap";
 @import "components/navigation/breadcrumbs";
 
 // Tools
 @import "components/tools/tabs";
 @import "components/tools/pager";
 @import "components/tools/pagetools";
-@import "components/tools/search";
 
 // Modules
-@import "components/modules/faq";
 @import "components/modules/events";
 @import "components/modules/news";
-@import "components/modules/blogs";
 @import "components/modules/imagegallery";
 @import "components/modules/alerts";
 @import "components/modules/lists";
-@import "components/modules/documents";
-
-
-
 
 
 /* ================================================================
@@ -98,18 +81,12 @@
 @import "vendor/focus-overlay";
 
 
-
-
-
 /* ================================================================
    Pages
    ================================================================ */
 
 // Admin styles, resets and fixes
 @import "pages/styleguide";
-
-
-
 
 
 /* ================================================================
