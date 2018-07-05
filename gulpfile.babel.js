@@ -104,7 +104,6 @@ gulp.task('build-css', function() {
 gulp.task('global-scripts', function() {
     return gulp.src([
             // Load in this order
-            'src/js/globals/jquery-1.12.4.min.js',
             'src/js/globals/plugins.js',
             'src/js/globals/*.js'
         ])
