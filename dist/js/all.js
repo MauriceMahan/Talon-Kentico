@@ -4822,7 +4822,7 @@ $(".faux-select").each(function () {
                 }
 
                 // Functionality for showing/hiding
-            };var toggleTarget = function toggleTarget() {
+            };function toggleTarget() {
                 // Clear out handler for easy exit of toggle if it exists
                 $html.off("click touchstart keyup", dataToggleHandler);
 
@@ -4864,7 +4864,7 @@ $(".faux-select").each(function () {
                         }
                     };
 
-                    window.DataExTimeOut = setTimeout(later, talonUtil.speeds.long);
+                    window.DataExpTimeOut = setTimeout(later, talonUtil.speeds.long);
 
                     /**
                      * If isHold is true then when a user clicks outside of the $target
@@ -4875,24 +4875,24 @@ $(".faux-select").each(function () {
                         $html.on("click touchstart keyup", dataToggleHandler);
                     }
                 }
-            };
+            }
 
             /**
              * Namespaced function for use in $html event checks
              * @param {Object} event Click/keyboard event object
              */
-            var dataToggleHandler = function dataToggleHandler(e) {
+            function dataToggleHandler(e) {
                 /**
                  * Function called if ESC is pressed or a click
                  * happens outside of the $target
                  */
-                var triggerTarget = function triggerTarget() {
+                function triggerTarget() {
                     // Show/hide $target
                     toggleTarget();
 
                     // Clear timeout to help prevent focus / other data toggle press conflicts
-                    window.DataExTimeOut = null;
-                };
+                    window.DataExpTimeOut = null;
+                }
 
                 // If ESC is keyup-ed
                 if (e.which === 27) {
@@ -4906,12 +4906,12 @@ $(".faux-select").each(function () {
                         triggerTarget();
                     }
                 }
-            };
+            }
 
             // If target element exist
             if ($target.length > 0) {
                 // Set global timeout to null so it doesn't conflict with other targets
-                window.DataExTimeOut = null;
+                window.DataExpTimeOut = null;
 
                 // Make sure there is an ID set for the toggle for a11y purposes
                 if (!toggleID) {

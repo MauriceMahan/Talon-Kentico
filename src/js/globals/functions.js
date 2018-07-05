@@ -39,15 +39,15 @@
 
             // By default `jsAnimation` will be used unless data-expander-css is added
             const jsAnimation = {
-                hide: () => {
+                hide: function() {
                     // Remove `active` state afterward slide animation
-                    $target.slideUp(animateTime, () => {
+                    $target.slideUp(animateTime, function() {
                         $target.removeClass("active");
                     });
                 },
-                show: () => {
+                show: function() {
                     // Add `active` state afterward slide animation
-                    $target.slideDown(animateTime, () => {
+                    $target.slideDown(animateTime, function() {
                         $target.addClass("active");
                     });
                 }
@@ -58,7 +58,7 @@
              * used with appropiate show/hide CSS animations if you go this route
              */
             const cssAnimation = {
-                hide: () => {
+                hide: function() {
                     /**
                      * Classes to use CSS animation for show/hiding.
                      * This will also allow us to set display to block/none
@@ -66,7 +66,7 @@
                     $target.removeClass("target-show");
                     $target.addClass("target-hide");
 
-                    setTimeout(() => {
+                    setTimeout(function() {
                         // At the end of the animation timer remove classes
                         $target.removeClass("active");
                         $target.removeClass("target-hide");
@@ -75,7 +75,7 @@
                         $toggle.attr("aria-expanded", "false");
                     }, animateTime);
                 },
-                show: () => {
+                show: function() {
                     // Should set to display block
                     $target.addClass("active");
 
@@ -83,14 +83,14 @@
                     * CSS animation for show/hiding.Inside of
                     * setTimeout for cross-browser bugs(?)
                     */
-                    setTimeout(() => {
+                    setTimeout(function() {
                         $target.addClass("target-show");
                     }, 0);
                 }
             }
 
             // Functionality for showing/hiding
-            const toggleTarget = () => {
+            function toggleTarget() {
                 // Clear out handler for easy exit of toggle if it exists
                 $html.off("click touchstart keyup", dataToggleHandler);
 
@@ -122,7 +122,7 @@
                      * Then we focus an item inside (input, select, etc)
                      * otherwise focusable the whole target
                      */
-                    const later = () => {
+                    const later = function() {
                         const $focusable = $target.find("input, select, textarea, a").first();
 
                         if ( $focusable.length > 0 ) {
@@ -132,7 +132,7 @@
                         }
                     };
 
-                    window.DataExTimeOut = setTimeout(later, talonUtil.speeds.long);
+                    window.DataExpTimeOut = setTimeout(later, talonUtil.speeds.long);
 
                     /**
                      * If isHold is true then when a user clicks outside of the $target
@@ -149,17 +149,17 @@
              * Namespaced function for use in $html event checks
              * @param {Object} event Click/keyboard event object
              */
-            const dataToggleHandler = (e) => {
+            function dataToggleHandler(e) {
                 /**
                  * Function called if ESC is pressed or a click
                  * happens outside of the $target
                  */
-                const triggerTarget = () => {
+                function triggerTarget() {
                     // Show/hide $target
                     toggleTarget();
 
                     // Clear timeout to help prevent focus / other data toggle press conflicts
-                    window.DataExTimeOut = null;
+                    window.DataExpTimeOut = null;
                 }
 
                 // If ESC is keyup-ed
@@ -179,7 +179,7 @@
             // If target element exist
             if ( $target.length > 0 ) {
                 // Set global timeout to null so it doesn't conflict with other targets
-                window.DataExTimeOut = null;
+                window.DataExpTimeOut = null;
 
                 // Make sure there is an ID set for the toggle for a11y purposes
                 if ( !toggleID ) {
