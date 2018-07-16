@@ -31,7 +31,7 @@
 @keyframes toggleTargetShow {
     from {
         opacity: 0;
-        transform: translateY(-25%);
+        transform: translateY(-10%);
     }
 
     to {
@@ -48,6 +48,6 @@
 
     to {
         opacity: 0;
-        transform: translateY(-25%);
+        transform: translateY(-10%);
     }
 }
