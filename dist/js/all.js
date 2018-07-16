@@ -4761,15 +4761,25 @@ $(".faux-select").each(function () {
      * tabs, expanders, menus, etc.)
      */
     talonUtil.setupToggles = function () {
-        $("[data-expander]").each(function () {
-            var $toggle = $(this);
-            var relatedData = $toggle.data("expander");
-            var $target = $("#" + relatedData);
-            var toggleID = $toggle.attr("id");
-            var animateTime = $toggle.data("expander-time") || 300;
-            var cssOnly = $toggle.is("[data-expander-css]");
-            var isHold = $toggle.is("[data-expander-hold]");
-            var $html = $("html");
+        $("[data-expander]").each(function (key) {
+            var $toggle = $(this),
+                relatedData = $toggle.data("expander"),
+                // ID of target
+            $relatedToggles = $("[data-expander='" + relatedData + "']").not(this),
+                // All toggles with same data
+            $target = $("#" + relatedData),
+                // Target element
+            toggleID = $toggle.attr("id"),
+                // ID of toggle
+            animateTime = $toggle.data("expander-time") || 300,
+                // Animation duration (ms)
+            useCss = $toggle.is("[data-expander-css]"),
+                // If CSS animations will be used instead of JS
+            isOverlay = $toggle.is("[data-expander-overlay]"),
+                // If toggle should be used for site overlay
+            isHold = $toggle.is("[data-expander-hold]"),
+                // If toggle should remain active on outside clicks
+            $html = $("html");
 
             // By default `jsAnimation` will be used unless data-expander-css is added
             var jsAnimation = {
@@ -4777,6 +4787,9 @@ $(".faux-select").each(function () {
                     // Remove `active` state afterward slide animation
                     $target.slideUp(animateTime, function () {
                         $target.removeClass("active");
+
+                        // Update a11y to describe as closed
+                        $toggle.add($relatedToggles).attr("aria-expanded", "false");
                     });
                 },
                 show: function show() {
@@ -4805,7 +4818,7 @@ $(".faux-select").each(function () {
                         $target.removeClass("target-hide");
 
                         // Update a11y to describe as closed
-                        $toggle.attr("aria-expanded", "false");
+                        $toggle.add($relatedToggles).attr("aria-expanded", "false");
                     }, animateTime);
                 },
                 show: function show() {
@@ -4827,19 +4840,25 @@ $(".faux-select").each(function () {
                 $html.off("click touchstart keyup", dataToggleHandler);
 
                 if ($target.hasClass("active")) {
-                    $toggle.removeClass("active");
+                    $toggle.add($relatedToggles).removeClass("active");
+
+                    // Removing class on html element for site overlay effects
+                    if (isOverlay) $html.removeClass("js-data-toggled");
 
                     // Show/hide animation depending on if you want to use CSS animations or not
-                    if (cssOnly) {
+                    if (useCss) {
                         cssAnimation.hide();
                     } else {
                         jsAnimation.hide();
                     }
                 } else {
-                    $toggle.addClass("active");
+                    $toggle.add($relatedToggles).addClass("active");
+
+                    // Adding class on html element for site overlay effects
+                    if (isOverlay) $html.addClass("js-data-toggled");
 
                     // Show/hide animation depending on if you want to use CSS animations or not
-                    if (cssOnly) {
+                    if (useCss) {
                         cssAnimation.show();
                     } else {
                         jsAnimation.show();
@@ -4864,16 +4883,15 @@ $(".faux-select").each(function () {
                         }
                     };
 
-                    window.DataExpTimeOut = setTimeout(later, talonUtil.speeds.long);
+                    // Timeout preferably same as or longer than the animation's duration
+                    window.dataExpTimeOut = setTimeout(later, animateTime);
 
                     /**
                      * If isHold is true then when a user clicks outside of the $target
                      * nothing will happen. If false then add event listener to check for
                      * clicks outside the $target.
                      */
-                    if (!isHold) {
-                        $html.on("click touchstart keyup", dataToggleHandler);
-                    }
+                    if (!isHold) $html.on("click touchstart keyup", dataToggleHandler);
                 }
             }
 
@@ -4891,7 +4909,7 @@ $(".faux-select").each(function () {
                     toggleTarget();
 
                     // Clear timeout to help prevent focus / other data toggle press conflicts
-                    window.DataExpTimeOut = null;
+                    window.dataExpTimeOut = null;
                 }
 
                 // If ESC is keyup-ed
@@ -4911,11 +4929,11 @@ $(".faux-select").each(function () {
             // If target element exist
             if ($target.length > 0) {
                 // Set global timeout to null so it doesn't conflict with other targets
-                window.DataExpTimeOut = null;
+                window.dataExpTimeOut = null;
 
                 // Make sure there is an ID set for the toggle for a11y purposes
                 if (!toggleID) {
-                    $toggle.attr("id", talonUtil.generateID("data-expander-"));
+                    $toggle.attr("id", "data-expander-" + key);
                     toggleID = $toggle.attr("id");
                 }
 

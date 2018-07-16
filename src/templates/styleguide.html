@@ -163,7 +163,57 @@
                 </div>
             </div>
 
-            <h3>SVGs</h3>
+            <h2>Expandable examples</h2>
+            <div class="expandable-examples">
+                <p>
+                    <a href="#" data-expander="content-1" data-expander-css>Toggle content [CSS animation]</a>
+                    <div id="content-1">
+                        <a href="#">Link</a>
+                        <div>Lorem ipsum dolor sit amet consectetur adipisicing elit. Ut placeat, exercitationem sit consectetur iste veritatis? Ipsam id, perferendis rem mollitia libero vel qui blanditiis ad vero repellat ab dicta molestias.</div>
+                    </div>
+                </p>
+                <p>
+                    <button data-expander="content-2">Toggle content [JS animation (default)]</button>
+                    <div id="content-2" style="display: none;">
+                        <label for="search-1">Search our site</label>
+                        <input id="search-1" type="text" placeholder="Search our site">
+                        <button>Search</button>
+                    </div>
+                </p>
+                <p>
+                    <button data-expander="content-3" data-expander-hold data-expander-css>Toggle content [CSS animation][Hold]</button>
+                    <div id="content-3">
+                        <label for="search-2">Search our site</label>
+                        <input id="search-2" type="text" placeholder="Search our site">
+                        <button>Search</button>
+                    </div>
+                </p>
+                <p>
+                    <button data-expander="content-4" data-expander-hold data-expander-css class="active">Toggle content [CSS animation][Hold][Active by default]</button>
+                    <div id="content-4" class="active">
+                        <label for="search-3">Search our site</label>
+                        <input id="search-3" type="text" placeholder="Search our site">
+                        <button>Search</button>
+                    </div>
+                </p>
+                <p>
+                    <button data-expander="content-5" data-expander-css data-expander-overlay>Toggle content [CSS animation][Overlay]</button>
+                    <div id="content-5">
+                        Opening this will trigger a site-wide overlay effect by toggling the <code>js-data-toggled</code> class on the HTML element.
+                    </div>
+                </p>
+                <p>
+                    <button data-expander="content-6" data-expander-css>Toggle content below #1 [CSS animation]</button>
+                    <button data-expander="content-6" data-expander-css>Toggle content below #2 [CSS animation]</button>
+                    <div id="content-6">
+                        This can be triggered by multiple data-expanders (good for desktop/mobile triggers like a search dropdowns)
+                    </div>
+                </p>
+            </div>
+
+            <!-- Global SVGs -->
+
+            <h2>SVGs</h2>
             <div id="svg-list"></div>
         </div>
     </div>

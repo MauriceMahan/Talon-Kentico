@@ -27,22 +27,27 @@
      * tabs, expanders, menus, etc.)
      */
     talonUtil.setupToggles = () => {
-        $("[data-expander]").each(function () {
-            const $toggle = $(this);
-            const relatedData = $toggle.data("expander");
-            const $target = $("#" + relatedData );
-            let toggleID = $toggle.attr("id");
-            const animateTime = $toggle.data("expander-time") || 300;
-            const cssOnly = $toggle.is("[data-expander-css]");
-            const isHold = $toggle.is("[data-expander-hold]");
-            const $html = $("html");
+        $("[data-expander]").each(function (key) {
+            var $toggle = $(this),
+                relatedData = $toggle.data("expander"), // ID of target
+                $relatedToggles = $("[data-expander='" + relatedData + "']").not(this), // All toggles with same data
+                $target = $("#" + relatedData ), // Target element
+                toggleID = $toggle.attr("id"), // ID of toggle
+                animateTime = $toggle.data("expander-time") || 300, // Animation duration (ms)
+                useCss = $toggle.is("[data-expander-css]"), // If CSS animations will be used instead of JS
+                isOverlay = $toggle.is("[data-expander-overlay]"), // If toggle should be used for site overlay
+                isHold = $toggle.is("[data-expander-hold]"), // If toggle should remain active on outside clicks
+                $html = $("html");
 
             // By default `jsAnimation` will be used unless data-expander-css is added
-            const jsAnimation = {
+            var jsAnimation = {
                 hide: function() {
                     // Remove `active` state afterward slide animation
                     $target.slideUp(animateTime, function() {
                         $target.removeClass("active");
+
+                        // Update a11y to describe as closed
+                        $toggle.add($relatedToggles).attr("aria-expanded", "false");
                     });
                 },
                 show: function() {
@@ -57,7 +62,7 @@
              * Only used if data-expander-css is added to the toggle. Should be
              * used with appropiate show/hide CSS animations if you go this route
              */
-            const cssAnimation = {
+            var cssAnimation = {
                 hide: function() {
                     /**
                      * Classes to use CSS animation for show/hiding.
@@ -72,7 +77,7 @@
                         $target.removeClass("target-hide");
 
                         // Update a11y to describe as closed
-                        $toggle.attr("aria-expanded", "false");
+                        $toggle.add($relatedToggles).attr("aria-expanded", "false");
                     }, animateTime);
                 },
                 show: function() {
@@ -95,19 +100,25 @@
                 $html.off("click touchstart keyup", dataToggleHandler);
 
                 if ( $target.hasClass("active") ) {
-                    $toggle.removeClass("active");
+                    $toggle.add($relatedToggles).removeClass("active");
+
+                    // Removing class on html element for site overlay effects
+                    if ( isOverlay ) $html.removeClass("js-data-toggled");
 
                     // Show/hide animation depending on if you want to use CSS animations or not
-                    if ( cssOnly ) {
+                    if ( useCss ) {
                         cssAnimation.hide();
                     } else {
                         jsAnimation.hide();
                     }
                 } else {
-                    $toggle.addClass("active");
+                    $toggle.add($relatedToggles).addClass("active");
+
+                    // Adding class on html element for site overlay effects
+                    if ( isOverlay ) $html.addClass("js-data-toggled");
 
                     // Show/hide animation depending on if you want to use CSS animations or not
-                    if ( cssOnly ) {
+                    if ( useCss ) {
                         cssAnimation.show();
                     } else {
                         jsAnimation.show();
@@ -122,8 +133,8 @@
                      * Then we focus an item inside (input, select, etc)
                      * otherwise focusable the whole target
                      */
-                    const later = function() {
-                        const $focusable = $target.find("input, select, textarea, a").first();
+                    var later = function() {
+                        var $focusable = $target.find("input, select, textarea, a").first();
 
                         if ( $focusable.length > 0 ) {
                             $focusable.focus();
@@ -132,16 +143,15 @@
                         }
                     };
 
-                    window.DataExpTimeOut = setTimeout(later, talonUtil.speeds.long);
+                    // Timeout preferably same as or longer than the animation's duration
+                    window.dataExpTimeOut = setTimeout(later, animateTime);
 
                     /**
                      * If isHold is true then when a user clicks outside of the $target
                      * nothing will happen. If false then add event listener to check for
                      * clicks outside the $target.
                      */
-                    if ( !isHold ) {
-                        $html.on("click touchstart keyup", dataToggleHandler);
-                    }
+                    if ( !isHold ) $html.on("click touchstart keyup", dataToggleHandler);
                 }
             }
 
@@ -159,7 +169,7 @@
                     toggleTarget();
 
                     // Clear timeout to help prevent focus / other data toggle press conflicts
-                    window.DataExpTimeOut = null;
+                    window.dataExpTimeOut = null;
                 }
 
                 // If ESC is keyup-ed
@@ -168,7 +178,7 @@
                     triggerTarget();
                 } else {
                     // Otherwise check if touch/click is outside of bounds of $target
-                    const $eTarget = $(e.target);
+                    var $eTarget = $(e.target);
 
                     if ( $eTarget.closest($target).length <= 0 && $eTarget.closest("#" + toggleID).length <= 0 ) {
                         triggerTarget();
@@ -179,11 +189,11 @@
             // If target element exist
             if ( $target.length > 0 ) {
                 // Set global timeout to null so it doesn't conflict with other targets
-                window.DataExpTimeOut = null;
+                window.dataExpTimeOut = null;
 
                 // Make sure there is an ID set for the toggle for a11y purposes
                 if ( !toggleID ) {
-                    $toggle.attr("id", talonUtil.generateID("data-expander-"));
+                    $toggle.attr("id", "data-expander-" + key);
                     toggleID = $toggle.attr("id");
                 }
 
