@@ -15,6 +15,10 @@ html {
   *:focus {
       outline: 1px solid blue;
   }
+
+  div {
+      margin: 1em 0;
+  }
 }
 
 .color-block {

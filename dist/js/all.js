@@ -4762,29 +4762,51 @@ $(".faux-select").each(function () {
      */
     talonUtil.setupToggles = function () {
         $("[data-expander]").each(function (key) {
-            var $toggle = $(this),
-                relatedData = $toggle.data("expander"),
+            var $this = $(this),
+                relatedData,
                 // ID of target
-            $relatedToggles = $("[data-expander='" + relatedData + "']").not(this),
-                // All toggles with same data
-            $target = $("#" + relatedData),
+            $toggle,
+                // Toggle element
+            $target,
                 // Target element
-            toggleID = $toggle.attr("id"),
+            $relatedToggles,
+                // All toggles with same target ID
+            toggleID,
                 // ID of toggle
-            animateTime = $toggle.data("expander-time") || 300,
+            animateTime,
                 // Animation duration (ms)
-            useCss = $toggle.is("[data-expander-css]"),
+            useCss,
                 // If CSS animations will be used instead of JS
-            isOverlay = $toggle.is("[data-expander-overlay]"),
+            isOverlay,
                 // If toggle should be used for site overlay
-            isHold = $toggle.is("[data-expander-hold]"),
+            isHold,
                 // If toggle should remain active on outside clicks
             $html = $("html");
+
+            /**
+             * Setting toggle/target depending on if an ID is specified or not.
+             * If no ID is supplied then it is treated as an expander container.
+             */
+            if ($this.data("expander").length > 0) {
+                $toggle = $this;
+                $relatedToggles = $("[data-expander='" + $this.data("expander") + "']").not(this);
+                $target = $("#" + $this.data("expander"));
+            } else {
+                $toggle = $this.find("[data-expander-toggle]");
+                $target = $this.find("[data-expander-target]");
+            }
+
+            // Setting up expander configurations for later
+            toggleID = $this.attr("id");
+            animateTime = $this.data("expander-time") || 300;
+            useCss = $this.is("[data-expander-css]");
+            isOverlay = $this.is("[data-expander-overlay]");
+            isHold = $this.is("[data-expander-hold]");
 
             // By default `jsAnimation` will be used unless data-expander-css is added
             var jsAnimation = {
                 hide: function hide() {
-                    // Remove `active` state afterward slide animation
+                    // Remove `active` state after slide animation
                     $target.slideUp(animateTime, function () {
                         $target.removeClass("active");
 
@@ -4793,7 +4815,7 @@ $(".faux-select").each(function () {
                     });
                 },
                 show: function show() {
-                    // Add `active` state afterward slide animation
+                    // Add `active` state after slide animation
                     $target.slideDown(animateTime, function () {
                         $target.addClass("active");
                     });
@@ -4912,7 +4934,7 @@ $(".faux-select").each(function () {
                     window.dataExpTimeOut = null;
                 }
 
-                // If ESC is keyup-ed
+                // If ESC is keyup'd
                 if (e.which === 27) {
                     $toggle.focus();
                     triggerTarget();
