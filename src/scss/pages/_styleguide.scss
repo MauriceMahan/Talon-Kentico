@@ -1,3 +1,26 @@
+html {
+  body {
+    transition: all 0.3s ease-in-out;
+  }
+  &.js-data-toggled {
+    color: $color-invert;
+    fill: $color-invert;
+    body {
+      background: $color-base;
+    }
+  }
+}
+
+.expandable-examples {
+  *:focus {
+      outline: 1px solid blue;
+  }
+
+  div {
+      margin: 1em 0;
+  }
+}
+
 .color-block {
   display:inline-block;
   margin:5px;

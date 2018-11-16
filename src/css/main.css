@@ -1191,6 +1191,46 @@ blockquote {
 .more {
   text-transform: capitalize; }
 
+.target-show {
+  animation-duration: .3s;
+  animation-fill-mode: both;
+  animation-timing-function: ease-in-out;
+  animation-name: toggleTargetShow; }
+
+.target-hide {
+  animation-duration: .3s;
+  animation-fill-mode: both;
+  animation-timing-function: ease-in-out;
+  animation-name: toggleTargetHide; }
+
+[data-expander-target] {
+  display: none; }
+
+[data-expander-target].active {
+  display: block; }
+
+[data-expander-target].target-show {
+  animation-name: toggleTargetShow; }
+
+[data-expander-target].target-hide {
+  animation-name: toggleTargetHide; }
+
+@keyframes toggleTargetShow {
+  from {
+    opacity: 0;
+    transform: translateY(-10%); }
+  to {
+    opacity: 1;
+    transform: translateY(0%); } }
+
+@keyframes toggleTargetHide {
+  from {
+    opacity: 1;
+    transform: translateY(0%); }
+  to {
+    opacity: 0;
+    transform: translateY(-10%); } }
+
 /* ================================================================
    Table Theme Styles
    ================================================================ */
@@ -2661,6 +2701,21 @@ PHOTO GALLERY
 /* ================================================================
    Pages
    ================================================================ */
+html body {
+  transition: all 0.3s ease-in-out; }
+
+html.js-data-toggled {
+  color: #fff;
+  fill: #fff; }
+  html.js-data-toggled body {
+    background: #000; }
+
+.expandable-examples *:focus {
+  outline: 1px solid blue; }
+
+.expandable-examples div {
+  margin: 1em 0; }
+
 .color-block {
   display: inline-block;
   margin: 5px;
