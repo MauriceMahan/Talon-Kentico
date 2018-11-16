@@ -4781,6 +4781,10 @@ $(".faux-select").each(function () {
                 // If toggle should be used for site overlay
             isHold,
                 // If toggle should remain active on outside clicks
+            isNoFocus,
+                // If should not focus inside after opening
+            isActive,
+                // If $toggle is active
             $html = $("html");
 
             /**
@@ -4802,6 +4806,8 @@ $(".faux-select").each(function () {
             useCss = $this.is("[data-expander-css]");
             isOverlay = $this.is("[data-expander-overlay]");
             isHold = $this.is("[data-expander-hold]");
+            isNoFocus = $this.is("[data-expander-nofocus]");
+            isActive = $this.hasClass("active");
 
             // By default `jsAnimation` will be used unless data-expander-css is added
             var jsAnimation = {
@@ -4823,7 +4829,7 @@ $(".faux-select").each(function () {
 
                 /**
                  * Only used if data-expander-css is added to the toggle. Should be
-                 * used with appropiate show/hide CSS animations if you go this route
+                 * used with appropriate show/hide CSS animations if you go this route
                  */
             };var cssAnimation = {
                 hide: function hide() {
@@ -4860,12 +4866,16 @@ $(".faux-select").each(function () {
             };function toggleTarget() {
                 // Clear out handler for easy exit of toggle if it exists
                 $html.off("click touchstart keyup", dataToggleHandler);
+                $html.off("click touchstart keyup", checkOutsideClick);
 
                 if ($target.hasClass("active")) {
                     $toggle.add($relatedToggles).removeClass("active");
 
                     // Removing class on html element for site overlay effects
-                    if (isOverlay) $html.removeClass("js-data-toggled");
+                    if (isOverlay) {
+                        $html.removeClass("js-data-toggled");
+                        $("html").removeClass("js-data-toggled-" + $target.attr("id"));
+                    }
 
                     // Show/hide animation depending on if you want to use CSS animations or not
                     if (useCss) {
@@ -4877,7 +4887,10 @@ $(".faux-select").each(function () {
                     $toggle.add($relatedToggles).addClass("active");
 
                     // Adding class on html element for site overlay effects
-                    if (isOverlay) $html.addClass("js-data-toggled");
+                    if (isOverlay) {
+                        $html.addClass("js-data-toggled");
+                        $("html").addClass("js-data-toggled-" + $target.attr("id"));
+                    }
 
                     // Show/hide animation depending on if you want to use CSS animations or not
                     if (useCss) {
@@ -4898,10 +4911,12 @@ $(".faux-select").each(function () {
                     var later = function later() {
                         var $focusable = $target.find("input, select, textarea, a").first();
 
-                        if ($focusable.length > 0) {
-                            $focusable.focus();
-                        } else {
-                            $target.focus();
+                        if (isNoFocus !== true) {
+                            if ($focusable.length > 0) {
+                                $focusable.focus();
+                            } else {
+                                $target.focus();
+                            }
                         }
                     };
 
@@ -4922,33 +4937,40 @@ $(".faux-select").each(function () {
              * @param {Object} event Click/keyboard event object
              */
             function dataToggleHandler(e) {
-                /**
-                 * Function called if ESC is pressed or a click
-                 * happens outside of the $target
-                 */
-                function triggerTarget() {
-                    // Show/hide $target
-                    toggleTarget();
-
-                    // Clear timeout to help prevent focus / other data toggle press conflicts
-                    window.dataExpTimeOut = null;
-                }
-
-                // If ESC is keyup'd
                 if (e.which === 27) {
+                    // If ESC is pressed or a click happens then trigger the target
                     $toggle.focus();
                     triggerTarget();
                 } else {
                     // Otherwise check if touch/click is outside of bounds of $target
-                    var $eTarget = $(e.target);
-
-                    if ($eTarget.closest($target).length <= 0 && $eTarget.closest("#" + toggleID).length <= 0) {
-                        triggerTarget();
-                    }
+                    checkOutsideClick(e);
                 }
             }
 
-            // If target element exist
+            /**
+             * Checks if the click/keyboard event happened outside of the bounds of $target
+             * @param {Object} event Click/keyboard event object
+             */
+            function checkOutsideClick(e) {
+                var $eTarget = $(e.target);
+
+                if ($eTarget.closest($target).length <= 0 && $eTarget.closest("#" + toggleID).length <= 0 && talonUtil.a11yClick(e) === true) {
+                    triggerTarget();
+                }
+            }
+
+            /**
+             * Trigger function to toggle the target while also refreshing the timeout
+             */
+            function triggerTarget() {
+                // Show/hide $target
+                toggleTarget();
+
+                // Clear timeout to help prevent focus / other data toggle press conflicts
+                window.dataExpTimeOut = null;
+            }
+
+            // If target element exist run the data-expander functionality
             if ($target.length > 0) {
                 // Set global timeout to null so it doesn't conflict with other targets
                 window.dataExpTimeOut = null;
@@ -4981,6 +5003,8 @@ $(".faux-select").each(function () {
                         toggleTarget();
                     }
                 });
+
+                if (!isHold && isActive) $html.on("click touchstart keyup", checkOutsideClick);
 
                 // Add attr to target for CSS to hook onto
                 $target.attr("data-expander-target", "");
