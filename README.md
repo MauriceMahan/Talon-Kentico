@@ -1,12 +1,12 @@
 Talon - An Americaneagle.com Toolkit
 ==========
 
-**Currently stable for Node v6.3.0**
+**Currently stable for Node v8**
 
 
 ##Installation/Setup
 
-To install this package - first ensure you are running Node v6.3.0 on your machine.
+To install this package - first ensure you are running Node v8 on your machine.
 
  1) Download the contents of the repository to your local machine
 
