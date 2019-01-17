@@ -308,7 +308,7 @@
         if (event.type === 'click' || event.type === 'touchstart') {
             return true;
         } else if (event.type === 'keypress' || event.type === 'keyup') {
-            var code = event.which || e.keyCode || 0;
+            var code = event.which || event.keyCode || 0;
             if (code === 32) {
                 event.preventDefault();
             }
