@@ -488,6 +488,93 @@ if (/iPad|iPhone|iPod/g.test(navigator.userAgent)) {
             .append("<span class='visually-hidden'>(Opens in a new window)</span>");
     });
 
+    // Remove me
+    // Testable labels, inputs, captcha, etc
+    // $('.EditingFormTable').each(function () {
+    //     const $this = $(this);
+    //     const $controls = $this.find('input[id], textarea[id], select[id]');
+    //     var $labels = $([]);
+
+    //     $controls.each(function (i) {
+    //         const $control = $(this);
+    //         const id = $control.attr('id');
+    //         const $label = $this.find(`[for="${id}"]`);
+
+    //         $labels.push($label);
+
+    //         $control.attr('id', `control-${i}`);
+    //         $label.attr('for', `control-${i}`);
+
+    //         $control.removeAttr('name');
+    //         $label.removeAttr('id');
+    //     });
+
+    //     $this.find("*").not($controls, $labels).removeAttr('id');
+    //     $this.find("*").not($controls, $labels).removeAttr('name');
+    //     $this.find("*").removeAttr("onclick");
+    //     $this.find("*").removeAttr("onchange");
+    //     $this.find("[href]").attr("href", "#");
+    //     $this.find(".CaptchaTable img").attr("src", "//placehold.it/80x20");
+    // });
+    // Remove me
+
+    // Default Kentico form ADA and styling adjustments
+    $('.FormPanel').each(function () {
+        const $form = $(this);
+        const $rows = $form.find('.FieldLabel').closest('tr'); // All fields will have a label except the submit field
+
+        // Add specific styling classes for controls that need extra styling options
+        $rows.each(function () {
+            const $row = $(this);
+
+            // Single checkbox
+            if ($row.find('.CheckBoxField').length > 0) {
+                let $labels = $row.find("label");
+
+                $row.addClass('single-checkbox-field');
+
+                // ADA: Remove extra labels starting from the last in DOM
+                $($labels.get().reverse()).each(function() {
+                    const forAttr = $(this).attr("for");
+
+                    if ($labels.not($(this)).is(`[for="${forAttr}"]`)) {
+                        $(this).remove();
+                        $labels = $labels.not($(this));
+                    }
+                });
+            }
+
+            // Multi checkbox
+            if ($row.find('[class*="checkbox-list"]').length > 0) $row.addClass('multi-checkbox-field');
+
+            // Radio list
+            if ($row.find('[class*="radio-list"]').length > 0) $row.addClass('radio-list-field');
+
+            // Date picker
+            if ($row.find('.CalendarTextBox').length > 0) $row.addClass('date-picker-field');
+
+            // Security code
+            if ($row.find('.CaptchaTable').length > 0) $row.addClass('captcha-field');
+
+            // Phone (Nothing to really target so a pseudo check)
+            if ($row.find('[class*="input-width-"]').length === 3) $row.addClass('phone-field');
+
+            // Select dropdowns and multiples
+            if ($row.find('select').length > 0) {
+                const $allSelects = $row.find('select');
+
+                // Wrap selects in a DIV. Also checks if it's a multiselector
+                $allSelects.each(function () {
+                    const $select = $(this);
+                    const multi = $select.attr("multiple") || false;
+
+                    $select.wrap(`<div class="select ${multi ? 'select-multi' : ''}"></div>`);
+                });
+
+                $row.addClass('dropdown-field');
+            }
+        });
+    });
 
     talonUtil.setupToggles();
     talonUtil.setupScrollPointerBlocker();

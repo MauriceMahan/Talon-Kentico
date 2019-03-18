@@ -2,13 +2,15 @@
    Button Styles
    ================================================================ */
 
-.button {
+.button,
+.btn {
 	display:inline-block;
 	padding:0.47em 1.2em;
 	border:0;
 	font-family:$font-primary; font-weight:$fontWeight-bold; color:$color-invert;
 	text-decoration:none; text-transform:uppercase; text-align:center;
 	background:$color-primary;
+	cursor: pointer;
 	transition:all 0.2s ease-out;
 
 	&:hover, &:focus {
