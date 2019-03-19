@@ -5208,70 +5208,104 @@ if (/iPad|iPhone|iPod/g.test(navigator.userAgent)) {
         $(this).attr("rel", "noopener noreferrer").append("<span class='visually-hidden'>(Opens in a new window)</span>");
     });
 
-    // Remove me
-    // Testable labels, inputs, captcha, etc
-    // $('.EditingFormTable').each(function () {
-    //     const $this = $(this);
-    //     const $controls = $this.find('input[id], textarea[id], select[id]');
-    //     var $labels = $([]);
-
-    //     $controls.each(function (i) {
-    //         const $control = $(this);
-    //         const id = $control.attr('id');
-    //         const $label = $this.find(`[for="${id}"]`);
-
-    //         $labels.push($label);
-
-    //         $control.attr('id', `control-${i}`);
-    //         $label.attr('for', `control-${i}`);
-
-    //         $control.removeAttr('name');
-    //         $label.removeAttr('id');
-    //     });
-
-    //     $this.find("*").not($controls, $labels).removeAttr('id');
-    //     $this.find("*").not($controls, $labels).removeAttr('name');
-    //     $this.find("*").removeAttr("onclick");
-    //     $this.find("*").removeAttr("onchange");
-    //     $this.find("[href]").attr("href", "#");
-    //     $this.find(".CaptchaTable img").attr("src", "//placehold.it/80x20");
-    // });
-    // Remove me
-
     // Default Kentico form ADA and styling adjustments
     $('.FormPanel').each(function () {
         var $form = $(this);
-        var $rows = $form.find('.FieldLabel').closest('tr'); // All fields will have a label except the submit field
+        var $rows = $form.find('.FieldLabel').closest('tr');
 
         // Add specific styling classes for controls that need extra styling options
+        // All fields will have a label except the submit field
         $rows.each(function () {
             var $row = $(this);
 
             // Single checkbox
             if ($row.find('.CheckBoxField').length > 0) {
-                var $labels = $row.find("label");
+                var $labels = $row.find('label');
 
                 $row.addClass('single-checkbox-field');
 
-                // ADA: Remove extra labels starting from the last in DOM
-                $($labels.get().reverse()).each(function () {
-                    var forAttr = $(this).attr("for");
+                /**
+                 * ADA: By default Kentico adds 2 labels for the same control
+                 * so we're removing the extra one. (Starting from last in DOM)
+                 */
+                if ($labels.length > 1) {
+                    $($labels.get().reverse()).each(function () {
+                        var forAttr = $(this).attr('for');
 
-                    if ($labels.not($(this)).is('[for="' + forAttr + '"]')) {
-                        $(this).remove();
-                        $labels = $labels.not($(this));
-                    }
-                });
+                        if ($labels.not($(this)).is('[for=\'' + forAttr + '\']')) {
+                            $(this).remove();
+                            $labels = $labels.not($(this));
+                        }
+                    });
+                }
             }
 
             // Multi checkbox
-            if ($row.find('[class*="checkbox-list"]').length > 0) $row.addClass('multi-checkbox-field');
+            if ($row.find('[class*="checkbox-list"]').length > 0) {
+                var labelText = $row.find('.EditingFormLabel').text().replace(':', '');
 
-            // Radio list
-            if ($row.find('[class*="radio-list"]').length > 0) $row.addClass('radio-list-field');
+                $row.addClass('multi-checkbox-field');
+                $row.attr('role', 'group');
+                $row.attr('aria-label', labelText);
+            }
 
-            // Date picker
-            if ($row.find('.CalendarTextBox').length > 0) $row.addClass('date-picker-field');
+            // Radio button group
+            if ($row.find('[class*="radio-list"]').length > 0) {
+                var _labelText = $row.find('.EditingFormLabel').text().replace(':', '');
+
+                $row.addClass('radio-list-field');
+                $row.attr('role', 'radiogroup');
+                $row.attr('aria-label', _labelText);
+            }
+
+            // Date picker and ADA fixes
+            if ($row.find('.CalendarTextBox').length > 0) {
+                var $input = $row.find('input');
+                var $calendarBtn = $row.find('button[title="Calendar"]');
+                var $popup = void 0;
+
+                $row.addClass('date-picker-field');
+
+                /**
+                 * When clicking on the calendar button the focus will automatically
+                 * be placed on the newly opened calendar popup. Settimeout added because
+                 * of the slight delay of the popup being interactive.
+                 */
+                $calendarBtn.on('click keypress', function (e) {
+                    $popup = $('#ui-datepicker-div');
+
+                    if (talonUtil.a11yClick(e) === true) {
+                        setTimeout(function () {
+                            $popup.attr('tabindex', '0');
+                            $popup.focus();
+                            $popup.on('click focusout', handlePopup);
+                        }, 250);
+                    }
+                });
+
+                /**
+                 * When clicking on a date number it will automatically be assigned,
+                 * close the popup, and re-focus the initial input. Clicking or tabbing
+                 * outside the popup will also re-focus the intial input.
+                 */
+                var handlePopup = function handlePopup(e) {
+                    var $target = $(e.target);
+                    var $relatedTarget = $(e.relatedTarget);
+                    var $calendarSubmit = $popup.find('.action-buttons .btn-primary');
+
+                    // Automatically submit calendar date when clicking an item
+                    if (talonUtil.a11yClick(e) === true && $target.is('.datetime-ui-state-default')) {
+                        $calendarSubmit.trigger('click');
+                    }
+
+                    // If the focus is outside of the popup close it and focus it's related input
+                    if ($relatedTarget.closest($popup).length <= 0) {
+                        $input.focus();
+                        $popup.hide();
+                        $popup.off('click', handlePopup);
+                    }
+                };
+            }
 
             // Security code
             if ($row.find('.CaptchaTable').length > 0) $row.addClass('captcha-field');
@@ -5283,7 +5317,7 @@ if (/iPad|iPhone|iPod/g.test(navigator.userAgent)) {
             if ($row.find('select').length > 0) {
                 var $allSelects = $row.find('select');
 
-                // Wrap selects in a DIV. Also checks if it's a multiselector
+                // Wrap selects in a DIV for additional styling
                 $allSelects.each(function () {
                     var $select = $(this);
                     var multi = $select.attr("multiple") || false;

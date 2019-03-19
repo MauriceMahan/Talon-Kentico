@@ -223,6 +223,8 @@ button {
 				margin: 0 0 $form-spacing 0;
 			}
 
+			.calendar-action { display: none; }
+
 			.form-control-text {
 				@extend .btn;
 				width: 100%;
@@ -283,6 +285,20 @@ button {
 			width: auto;
 			height: auto;
 		}
+	}
+}
+
+// jQuery date picker popup
+#ui-datepicker-div {
+	z-index: 8999 !important;
+
+	.datetime-ui-datepicker-prev,
+	.datetime-ui-datepicker-next {
+		display: none;
+	}
+
+	@at-root html[class^="js-"] & .action-buttons {
+		display: none;
 	}
 }
 
