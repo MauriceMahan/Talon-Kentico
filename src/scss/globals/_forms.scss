@@ -2,43 +2,21 @@
    Variables
    ================================================================ */
 
-$input-height: 30px !default;
+$input-height: 40px !default;
 $input-background: #ffffff !default;
-$input-border-color: #d4d4d4 !default;
-$input-border-width: 1px !default;
-$input-border-radius: 5px !default;
-$input-box-shadow: inset 0 1px 5px hsla(0%, 0%, 0%, 0.22) !default;
-$input-box-shadow-active: inset 0 1px 5px hsla(0%, 0%, 0%, 0.22), inset 0 0 0 2px $color-primary !default;
-
-
-
-
-
-/* ================================================================
-   Wraps
-   ================================================================ */
-
-.form {
-	margin:15px 0; padding:15px;
-}
-
-.form-group {
-	padding:10px 0;
-}
-
-
-
-
+$input-border-color: $color-primary !default;
+$input-border-color-selected: $color-secondary !default;
+$input-border-width: 2px !default;
+$input-padding: 5px 10px;
+$form-spacing: 10px;
+$note-size: 14px;
+$error-color: red;
+$info-success: green;
+$info-color: #225894;
 
 /* ================================================================
-   Labels/Indicators
+   Required
    ================================================================ */
-
-.form-label-wrap { }
-
-.form-control-label {
-	display:block;
-}
 
 .required-indicator {
 	position:relative;
@@ -51,78 +29,284 @@ $input-box-shadow-active: inset 0 1px 5px hsla(0%, 0%, 0%, 0.22), inset 0 0 0 2p
 	}
 }
 
-.error-message {
-	margin-top:5px;
-	@include x-rem(font-size, 12px); color: red;
-}
-
-
-
-
-
 /* ================================================================
    Controls/Inputs
    ================================================================ */
 
-.form-control { }
-
-
-
-input[type="text"], input[type="search"] {
-    -webkit-appearance: none !important;
-    border-radius: 0 !important;
+label {
+	vertical-align: middle;
 }
 
-input[type="text"],
-input[type="password"],
-input[type="tel"],
-input[type="email"] {
-	vertical-align: top;
-	padding: 5px 13px;
-	@include x-rem(height, $input-height);
-	@include x-rem(font-size, 14px);
-	box-shadow:$input-box-shadow;
-    border: $input-border-width solid $input-border-color; border-radius:0;
-	background: $input-background;
-	transition:right 0.2s ease-out;
+input {
+	padding: $input-padding;
+	@include x-rem(font-size, 16px);
+	border: $input-border-width solid $input-border-color;
+	border-radius:0;
+	vertical-align: middle;
+	height: $input-height;
+	max-width: 100%;
+	transition: all 0.2s ease-in-out;
 
+	&:hover,
 	&:focus {
-		outline: none;
-		box-shadow:$input-box-shadow-active;
+		border-color: $input-border-color-selected;
 	}
 }
 
 input[type="checkbox"],
 input[type="radio"] {
-	margin-right: 2px;
+	margin-right: 5px;
 	border-radius: 0;
-	background: none;
+	vertical-align: middle;
+	height: auto;
+}
+
+// File inputs are very tricky cross browser so recreating height using padding
+input[type="file"] {
+	height: auto;
+	padding-top: 0.345rem;
+	padding-bottom: 0.345rem;
+}
+
+input[type="submit"] {
+	@extend .button;
 }
 
 select {
-	@include x-rem(height, $input-height);
 	border: $input-border-width solid $input-border-color;
-	background: $input-background;
-	box-shadow:$input-box-shadow;
+	vertical-align: middle;
+	height: $input-height;
+	padding: $input-padding;
+	max-width: 100%;
 
+	&[multiple] { height: auto; }
+
+	&:hover,
 	&:focus {
-		outline: none;
-		box-shadow:$input-box-shadow-active;
+		border-color: $input-border-color-selected;
 	}
 }
 
 textarea {
-	padding: 10px 13px;
+	padding: $input-padding;
 	min-height: 100px;
-    border: $input-border-width solid $input-border-color; border-radius:0;
+	border: $input-border-width solid $input-border-color;
+	border-radius:0;
 	background: $input-background;
-	box-shadow:$input-box-shadow;
-	transition:right 0.2s ease-out;
+	max-width: 100%;
+	transition: all 0.2s ease-in-out;
 
+	&:hover,
 	&:focus {
-		outline: none;
-		box-shadow:$input-box-shadow-active;
+		border-color: $input-border-color-selected;
 	}
 }
 
+button {
+	vertical-align: middle;
+}
 
+/* ================================================================
+   Kentico CMS
+   ================================================================ */
+
+.InfoLabel {
+	color: $info-color;
+}
+
+.ErrorLabel {
+	color: $error-color;
+}
+
+.EditingFormErrorLabel {
+	display: block;
+	color: $error-color;
+	margin: $form-spacing 0 0 0;
+}
+
+.FormPanel {
+	display: block;
+	max-width: $bp-sw;
+
+	table.EditingFormTable {
+		width: 100%;
+
+		thead,
+		tbody,
+		tr,
+		td { display: block; }
+
+		tr {
+			padding: $form-spacing 0;
+			border-top: 1px solid #b8b8b8;
+
+			&:first-child { border-top: none; }
+		}
+
+		label,
+		.EditingFormLabel {
+			display: block;
+			margin: 0 0 $form-spacing;
+			font-weight: bold;
+		}
+
+		input,
+		select,
+		textarea {
+			width: 100%;
+
+			&[type="checkbox"],
+			&[type="radio"] {
+				width: auto;
+			}
+		}
+
+		.ExplanationText {
+			margin: $form-spacing 0 0 0;
+			@include x-rem(font-size, $note-size);
+		}
+
+		.checkbox { display: inline-block; }
+
+		// Single checkbox styling
+		.single-checkbox-field {
+			display: flex;
+			flex-wrap: wrap;
+			justify-content: flex-start;
+			align-items: center;
+
+			label { margin: 0 $form-spacing 0 0; }
+
+			.EditingFormValueCell {
+				font-size: 0;
+			}
+
+			.ExplanationText {
+				@include x-rem(font-size, $note-size);
+			}
+		}
+
+		// Multiple checkbox styling
+		.multi-checkbox-field {
+			label {
+				display: inline-block;
+				margin: 0;
+				font-weight: normal;
+			}
+
+			input {
+				display: inline-block;
+				width: auto;
+			}
+		}
+
+		// Radio list styling
+		.radio-list-field {
+			label {
+				display: inline-block;
+				margin: 0;
+				font-weight: normal;
+			}
+
+			input {
+				display: inline-block;
+				width: auto;
+			}
+		}
+
+		// Date picker styling
+		.date-picker-field {
+			input { margin: 0 0 $form-spacing 0; }
+
+			button {
+				width: 100%;
+				margin: 0 0 $form-spacing 0;
+			}
+
+			.calendar-action { display: none; }
+
+			.form-control-text {
+				@extend .btn;
+				width: 100%;
+			}
+		}
+
+		// Captcha
+		.captcha-field {
+			.CaptchaTable {
+				width: 100%;
+				margin: 0;
+				font-size: 0;
+				border-collapse: collapse;
+
+				tr {
+					border: none;
+					padding: 0;
+				}
+
+				input {
+					@include x-rem(font-size, 16px);
+					margin: $form-spacing 0;
+				}
+			}
+		}
+
+		// Phone
+		.phone-field {
+			.editing-form-control-nested-control {
+				 display: flex;
+				 justify-content: space-between;
+				 align-items: center;
+				 max-width: $bp-s;
+
+				 span {
+					 flex: 0 0 auto;
+					 margin: 0 5px;
+				 }
+
+				 input {
+					 min-width: 0;
+					 flex: 1 1 100%;
+				 }
+			}
+		}
+
+		// Media selection styling
+		.MediaSelectorHeader {
+			input:not(:last-child) { margin-bottom: $form-spacing; }
+		}
+
+		// Calendar
+		.icon-calendar + .sr-only {
+			display: inline-block;
+			overflow: visible;
+			position: static;
+			clip: auto;
+			width: auto;
+			height: auto;
+		}
+	}
+}
+
+// jQuery date picker popup
+#ui-datepicker-div {
+	z-index: 8999 !important;
+
+	.datetime-ui-datepicker-prev,
+	.datetime-ui-datepicker-next {
+		display: none;
+	}
+
+	@at-root html[class^="js-"] & .action-buttons {
+		display: none;
+	}
+}
+
+@media (min-width: $bp-mw) {
+	.FormPanel {
+		width: 100%;
+		overflow-x: auto;
+		-webkit-overflow-scrolling: touch;
+		-ms-overflow-style: -ms-autohiding-scrollbar;
+	}
+}
