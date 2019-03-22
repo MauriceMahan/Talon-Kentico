@@ -1,6 +1,7 @@
 {% extends "partials/layout.html" %}
 
-{% block pagetitle %} Style Guide {% endblock %}
+{% set pagetitle = "Styleguide" %}
+{% block pagetitle %} {{ pagetitle }} {% endblock %}
 
 {% block content %}
 <div class="container">
@@ -9,6 +10,10 @@
             <h1>Style Guide</h1>
 
             <hr />
+
+            <!-- Templates -->
+            <h2>Templates</h2>
+            {% include "partials/template-listing.html" %}
 
             <!-- Colors -->
 
