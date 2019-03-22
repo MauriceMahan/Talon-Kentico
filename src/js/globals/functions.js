@@ -1,5 +1,4 @@
 (function ($, talonUtil) {
-
     /** Click Navigation **/
     $(".main-nav").clickMenu();
 

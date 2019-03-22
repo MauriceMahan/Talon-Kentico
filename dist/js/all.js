@@ -5237,7 +5237,6 @@ if (/iPad|iPhone|iPod/g.test(navigator.userAgent)) {
 })(jQuery, window.talonUtil = window.talonUtil || {});
 
 (function ($, talonUtil) {
-
     /** Click Navigation **/
     $(".main-nav").clickMenu();
 
