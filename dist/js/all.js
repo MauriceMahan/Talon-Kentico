@@ -4733,8 +4733,21 @@ $(".faux-select").each(function () {
     }, e.fn.focusOverlay.getters = ["destroy"], e.fn.focusOverlay.defaults = { id: "focus-overlay", activeClass: "focus-overlay-active", animatingClass: "focus-overlay-animating", targetClass: "focus-overlay-target", zIndex: 9001, duration: 500, inactiveAfterDuration: !1, triggerKeys: [9, 36, 37, 38, 39, 40, 13, 32, 16, 17, 18, 27], inactiveOnNonTriggerKey: !0, inactiveOnClick: !0, alwaysActive: !1, watchTransitionEnd: !0 };
 });
 /* ================================================================
-    UTILITY FUNCTIONS AND GLOBAL VARS
-   ================================================================ */
+        POLYFILLS
+    ================================================================ */
+
+/** iOS FIX to incorrect focus bug with keyboard not showing up and then the last touchup element gets clicked. **/
+if (/iPad|iPhone|iPod/g.test(navigator.userAgent)) {
+    (function ($) {
+        return $.fn.focus = function () {
+            return arguments[0];
+        };
+    })(jQuery);
+}
+
+/* ================================================================
+ UTILITY FUNCTIONS AND GLOBAL VARS
+================================================================ */
 
 (function ($, talonUtil, undefined) {
     "use strict";
@@ -5097,27 +5110,133 @@ $(".faux-select").each(function () {
             });
         }
     };
+
+    // Default Kentico form ADA and styling adjustments
+    talonUtil.setupKenticoForms = function () {
+        $('.FormPanel').each(function () {
+            var $form = $(this);
+            var $rows = $form.find('.FieldLabel').closest('tr');
+
+            // Add specific styling classes for controls that need extra styling options
+            // All fields will have a label except the submit field
+            $rows.each(function () {
+                var $row = $(this);
+
+                // Single checkbox
+                if ($row.find('.CheckBoxField').length > 0) {
+                    var $labels = $row.find('label');
+
+                    $row.addClass('single-checkbox-field');
+
+                    /**
+                     * ADA: By default Kentico adds 2 labels for the same control
+                     * so we're removing the extra one. (Starting from last in DOM)
+                     */
+                    if ($labels.length > 1) {
+                        $($labels.get().reverse()).each(function () {
+                            var forAttr = $(this).attr('for');
+
+                            if ($labels.not($(this)).is('[for=\'' + forAttr + '\']')) {
+                                $(this).remove();
+                                $labels = $labels.not($(this));
+                            }
+                        });
+                    }
+                }
+
+                // Multi checkbox
+                if ($row.find('[class*="checkbox-list"]').length > 0) {
+                    var labelText = $row.find('.EditingFormLabel').text().replace(':', '');
+
+                    $row.addClass('multi-checkbox-field');
+                    $row.attr('role', 'group');
+                    $row.attr('aria-label', labelText);
+                }
+
+                // Radio button group
+                if ($row.find('[class*="radio-list"]').length > 0) {
+                    var _labelText = $row.find('.EditingFormLabel').text().replace(':', '');
+
+                    $row.addClass('radio-list-field');
+                    $row.attr('role', 'radiogroup');
+                    $row.attr('aria-label', _labelText);
+                }
+
+                // Date picker and ADA fixes
+                if ($row.find('.CalendarTextBox').length > 0) {
+                    var $input = $row.find('input');
+                    var $calendarBtn = $row.find('button[title="Calendar"]');
+                    var $popup = void 0;
+
+                    $row.addClass('date-picker-field');
+
+                    /**
+                     * When clicking on the calendar button the focus will automatically
+                     * be placed on the newly opened calendar popup. Settimeout added because
+                     * of the slight delay of the popup being interactive.
+                     */
+                    $calendarBtn.on('click keypress', function (e) {
+                        $popup = $('#ui-datepicker-div');
+
+                        if (talonUtil.a11yClick(e) === true) {
+                            setTimeout(function () {
+                                $popup.attr('tabindex', '0');
+                                $popup.focus();
+                                $popup.on('click focusout', handlePopup);
+                            }, 250);
+                        }
+                    });
+
+                    /**
+                     * When clicking on a date number it will automatically be assigned,
+                     * close the popup, and re-focus the initial input. Clicking or tabbing
+                     * outside the popup will also re-focus the intial input.
+                     */
+                    var handlePopup = function handlePopup(e) {
+                        var $target = $(e.target);
+                        var $relatedTarget = $(e.relatedTarget);
+                        var $calendarSubmit = $popup.find('.action-buttons .btn-primary');
+
+                        // Automatically submit calendar date when clicking an item
+                        if (talonUtil.a11yClick(e) === true && $target.is('.datetime-ui-state-default')) {
+                            $calendarSubmit.trigger('click');
+                        }
+
+                        // If the focus is outside of the popup close it and focus it's related input
+                        if ($relatedTarget.closest($popup).length <= 0) {
+                            $input.focus();
+                            $popup.hide();
+                            $popup.off('click', handlePopup);
+                        }
+                    };
+                }
+
+                // Security code
+                if ($row.find('.CaptchaTable').length > 0) $row.addClass('captcha-field');
+
+                // Phone (Nothing to really target so a pseudo check)
+                if ($row.find('[class*="input-width-"]').length === 3) $row.addClass('phone-field');
+
+                // Select dropdowns and multiples
+                if ($row.find('select').length > 0) {
+                    var $allSelects = $row.find('select');
+
+                    // Wrap selects in a DIV for additional styling
+                    $allSelects.each(function () {
+                        var $select = $(this);
+                        var multi = $select.attr("multiple") || false;
+
+                        $select.wrap('<div class="select ' + (multi ? 'select-multi' : '') + '"></div>');
+                    });
+
+                    $row.addClass('dropdown-field');
+                }
+            });
+        });
+    };
 })(jQuery, window.talonUtil = window.talonUtil || {});
 
-/* ================================================================
-        POLYFILLS
-    ================================================================ */
-
-/** iOS FIX to incorrect focus bug with keyboard not showing up and then the last touchup element gets clicked. **/
-if (/iPad|iPhone|iPod/g.test(navigator.userAgent)) {
-    (function ($) {
-        return $.fn.focus = function () {
-            return arguments[0];
-        };
-    })(jQuery);
-}
-
-/* ================================================================
-        SITE INIT
-    ================================================================ */
-
 (function ($, talonUtil) {
-
     /** Click Navigation **/
     $(".main-nav").clickMenu();
 
@@ -5208,129 +5327,8 @@ if (/iPad|iPhone|iPod/g.test(navigator.userAgent)) {
         $(this).attr("rel", "noopener noreferrer").append("<span class='visually-hidden'>(Opens in a new window)</span>");
     });
 
-    // Default Kentico form ADA and styling adjustments
-    $('.FormPanel').each(function () {
-        var $form = $(this);
-        var $rows = $form.find('.FieldLabel').closest('tr');
-
-        // Add specific styling classes for controls that need extra styling options
-        // All fields will have a label except the submit field
-        $rows.each(function () {
-            var $row = $(this);
-
-            // Single checkbox
-            if ($row.find('.CheckBoxField').length > 0) {
-                var $labels = $row.find('label');
-
-                $row.addClass('single-checkbox-field');
-
-                /**
-                 * ADA: By default Kentico adds 2 labels for the same control
-                 * so we're removing the extra one. (Starting from last in DOM)
-                 */
-                if ($labels.length > 1) {
-                    $($labels.get().reverse()).each(function () {
-                        var forAttr = $(this).attr('for');
-
-                        if ($labels.not($(this)).is('[for=\'' + forAttr + '\']')) {
-                            $(this).remove();
-                            $labels = $labels.not($(this));
-                        }
-                    });
-                }
-            }
-
-            // Multi checkbox
-            if ($row.find('[class*="checkbox-list"]').length > 0) {
-                var labelText = $row.find('.EditingFormLabel').text().replace(':', '');
-
-                $row.addClass('multi-checkbox-field');
-                $row.attr('role', 'group');
-                $row.attr('aria-label', labelText);
-            }
-
-            // Radio button group
-            if ($row.find('[class*="radio-list"]').length > 0) {
-                var _labelText = $row.find('.EditingFormLabel').text().replace(':', '');
-
-                $row.addClass('radio-list-field');
-                $row.attr('role', 'radiogroup');
-                $row.attr('aria-label', _labelText);
-            }
-
-            // Date picker and ADA fixes
-            if ($row.find('.CalendarTextBox').length > 0) {
-                var $input = $row.find('input');
-                var $calendarBtn = $row.find('button[title="Calendar"]');
-                var $popup = void 0;
-
-                $row.addClass('date-picker-field');
-
-                /**
-                 * When clicking on the calendar button the focus will automatically
-                 * be placed on the newly opened calendar popup. Settimeout added because
-                 * of the slight delay of the popup being interactive.
-                 */
-                $calendarBtn.on('click keypress', function (e) {
-                    $popup = $('#ui-datepicker-div');
-
-                    if (talonUtil.a11yClick(e) === true) {
-                        setTimeout(function () {
-                            $popup.attr('tabindex', '0');
-                            $popup.focus();
-                            $popup.on('click focusout', handlePopup);
-                        }, 250);
-                    }
-                });
-
-                /**
-                 * When clicking on a date number it will automatically be assigned,
-                 * close the popup, and re-focus the initial input. Clicking or tabbing
-                 * outside the popup will also re-focus the intial input.
-                 */
-                var handlePopup = function handlePopup(e) {
-                    var $target = $(e.target);
-                    var $relatedTarget = $(e.relatedTarget);
-                    var $calendarSubmit = $popup.find('.action-buttons .btn-primary');
-
-                    // Automatically submit calendar date when clicking an item
-                    if (talonUtil.a11yClick(e) === true && $target.is('.datetime-ui-state-default')) {
-                        $calendarSubmit.trigger('click');
-                    }
-
-                    // If the focus is outside of the popup close it and focus it's related input
-                    if ($relatedTarget.closest($popup).length <= 0) {
-                        $input.focus();
-                        $popup.hide();
-                        $popup.off('click', handlePopup);
-                    }
-                };
-            }
-
-            // Security code
-            if ($row.find('.CaptchaTable').length > 0) $row.addClass('captcha-field');
-
-            // Phone (Nothing to really target so a pseudo check)
-            if ($row.find('[class*="input-width-"]').length === 3) $row.addClass('phone-field');
-
-            // Select dropdowns and multiples
-            if ($row.find('select').length > 0) {
-                var $allSelects = $row.find('select');
-
-                // Wrap selects in a DIV for additional styling
-                $allSelects.each(function () {
-                    var $select = $(this);
-                    var multi = $select.attr("multiple") || false;
-
-                    $select.wrap('<div class="select ' + (multi ? 'select-multi' : '') + '"></div>');
-                });
-
-                $row.addClass('dropdown-field');
-            }
-        });
-    });
-
     talonUtil.setupToggles();
     talonUtil.setupScrollPointerBlocker();
     talonUtil.setupUserBinds();
+    talonUtil.setupKenticoForms();
 })(jQuery, window.talonUtil);

@@ -105,6 +105,7 @@ gulp.task('global-scripts', function() {
     return gulp.src([
             // Load in this order
             'src/js/globals/plugins.js',
+            'src/js/globals/utils.js',
             'src/js/globals/*.js'
         ])
         .pipe(plumber({ errorHandler: onError }))
