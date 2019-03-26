@@ -3370,10 +3370,17 @@ if (/iPad|iPhone|iPod/g.test(navigator.userAgent)) {
     /** FocusOverlay **/
     $("body").focusOverlay();
 
-    var hero = tns({
-        container: '.hero-banner',
-        mouseDrag: true,
-        autoplay: true
+    $('.hero-slider-section').each(function () {
+        var slider = this.querySelector('.hero-slider');
+        var prev = this.querySelector('.hero-slider-btn-prev');
+        var next = this.querySelector('.hero-slider-btn-next');
+
+        var hero = tns({
+            container: slider,
+            prevButton: prev,
+            nextButton: next,
+            autoplay: true
+        });
     });
 
     $(".photo-overlay").colorbox({ rel: 'group1' });

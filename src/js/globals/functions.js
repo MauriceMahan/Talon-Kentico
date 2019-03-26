@@ -5,11 +5,18 @@
     /** FocusOverlay **/
     $("body").focusOverlay();
 
-    const hero = tns({
-        container: '.hero-banner',
-        mouseDrag: true,
-        autoplay: true
-    })
+    $('.hero-slider-section').each(function () {
+        const slider = this.querySelector('.hero-slider');
+        const prev = this.querySelector('.hero-slider-btn-prev');
+        const next = this.querySelector('.hero-slider-btn-next');
+
+        const hero = tns({
+            container: slider,
+            prevButton: prev,
+            nextButton: next,
+            autoplay: true
+        });
+    });
 
     $(".photo-overlay").colorbox({rel:'group1'});
 

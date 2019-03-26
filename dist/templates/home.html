@@ -160,44 +160,38 @@
 
             <main id="site-main" role="main">
                   
-<section id="maincontent" class="hero-banner" aria-label="Carousel">
-    
-        <div class="slide">
-            <img src="//placehold.it/1920x500?text=0" alt="">
-        </div>
-    
-        <div class="slide">
-            <img src="//placehold.it/1920x500?text=1" alt="">
-        </div>
-    
-        <div class="slide">
-            <img src="//placehold.it/1920x500?text=2" alt="">
-        </div>
-    
-        <div class="slide">
-            <img src="//placehold.it/1920x500?text=3" alt="">
-        </div>
-    
-        <div class="slide">
-            <img src="//placehold.it/1920x500?text=4" alt="">
-        </div>
-    
-        <div class="slide">
-            <img src="//placehold.it/1920x500?text=5" alt="">
-        </div>
-    
-        <div class="slide">
-            <img src="//placehold.it/1920x500?text=6" alt="">
-        </div>
-    
-        <div class="slide">
-            <img src="//placehold.it/1920x500?text=7" alt="">
-        </div>
-    
-        <div class="slide">
-            <img src="//placehold.it/1920x500?text=8" alt="">
-        </div>
-    
+<section id="maincontent" class="hero-slider-section" aria-label="Carousel">
+    <button class="hero-slider-btn hero-slider-btn-prev">
+        <svg aria-hidden="true" focusable="false">
+            <use xlink:href="#icon-chevron-left"></use>
+        </svg>
+        <span class="visually-hidden">Previous</span>
+    </button>
+    <button class="hero-slider-btn hero-slider-btn-next">
+        <svg aria-hidden="true" focusable="false">
+            <use xlink:href="#icon-chevron-right"></use>
+        </svg>
+        <span class="visually-hidden">Next</span>
+    </button>
+    <div class="hero-slider">
+        
+            <div class="slide">
+                <img src="//placehold.it/1920x500?text=0" alt="">
+            </div>
+        
+            <div class="slide">
+                <img src="//placehold.it/1920x500?text=1" alt="">
+            </div>
+        
+            <div class="slide">
+                <img src="//placehold.it/1920x500?text=2" alt="">
+            </div>
+        
+            <div class="slide">
+                <img src="//placehold.it/1920x500?text=3" alt="">
+            </div>
+        
+    </div>
 </section>
 
             </main>
@@ -226,7 +220,6 @@
         <!-- Template listing for development only START -->
 <style>
         .talon-templates-wrapper {
-            display: none;
             position: fixed;
             top: 0;
             left: -300px;
@@ -254,7 +247,7 @@
 
         .talon-templates-wrapper ul {
             padding: 0;
-            margin: 0;
+            margin: 0 0 10px;
         }
 
         .talon-templates-wrapper a {
@@ -288,6 +281,16 @@
                 <li><a href="two-column.html">Two Column Template</a></li>
             
         </ul>
+        <button id="talon-templates-hide">Hide</button>
+        <script>
+            // Styleguide has 2 of these on the same page
+            document.querySelectorAll('#talon-templates-hide').forEach(btn => {
+                btn.addEventListener('click', e => {
+                    // jQuery should be loaded by the time it's clicked
+                    $(e.target).closest('.talon-templates-wrapper').hide();
+                });
+            })
+        </script>
     </div>
     <!-- Template listing for development only END -->
 	</body>

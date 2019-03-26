@@ -1,7 +1,6 @@
 <!-- Template listing for development only START -->
 <style>
         .talon-templates-wrapper {
-            display: none;
             position: fixed;
             top: 0;
             left: -300px;
@@ -29,7 +28,7 @@
 
         .talon-templates-wrapper ul {
             padding: 0;
-            margin: 0;
+            margin: 0 0 10px;
         }
 
         .talon-templates-wrapper a {
@@ -63,5 +62,15 @@
                 <li><a href="two-column.html">Two Column Template</a></li>
             
         </ul>
+        <button id="talon-templates-hide">Hide</button>
+        <script>
+            // Styleguide has 2 of these on the same page
+            document.querySelectorAll('#talon-templates-hide').forEach(btn => {
+                btn.addEventListener('click', e => {
+                    // jQuery should be loaded by the time it's clicked
+                    $(e.target).closest('.talon-templates-wrapper').hide();
+                });
+            })
+        </script>
     </div>
     <!-- Template listing for development only END -->
