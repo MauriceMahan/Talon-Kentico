@@ -1,26 +1,10 @@
-{% extends "partials/layout.html" %}
-
-{% set pagetitle = "Home" %}
-{% block pagetitle %} {{ pagetitle }} {% endblock %}
-
-{% block content %}
-<div class="container">
-    <div class="row">
-        <div class="col-xs-12">
-            <section id="maincontent" class="hero" aria-label="Carousel">
-                <div class="slider" data-slick='{"slidesToShow":1, "slidesToScroll":1, "arrows": true, "fade": true}'>
-                    <div class="slide-item" style="background-image:url(../images/placeholders/hero-image.jpg);">
-                        <div class="slide-text">Slide Text Goes Here</div>
-                    </div>
-                    <div class="slide-item">
-                        <div class="slide-text">
-                            <h3 class="title">Slide Title Goes Here</h3>
-                            <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Repellat nostrum nam quas ex odit laudantium nisi similique? Eligendi ullam repellendus sed perspiciatis beatae exercitationem quae, assumenda sequi, doloremque omnis animi.</p>
-                        </div>
-                    </div>
-                </div>
-            </section>
+{% extends "partials/layout.html" %} {% set pagetitle = "Home" %} {% block
+pagetitle %} {{ pagetitle }} {% endblock %} {% block content %}
+<section id="maincontent" class="hero-banner" aria-label="Carousel">
+    {% for i in range(0, 9) %}
+        <div class="slide">
+            <img src="//placehold.it/1920x500?text={{i}}" alt="">
         </div>
-    </div>
-</div>
+    {% endfor %}
+</section>
 {% endblock %}

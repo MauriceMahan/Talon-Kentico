@@ -24,6 +24,10 @@
 @import "globals/boilerplate";
 @import "globals/grid";
 
+// Layout Styles
+@import "globals/layout/header";
+@import "globals/layout/footer";
+
 // Global Element Styles
 @import "globals/typography";
 @import "globals/buttons";
@@ -52,6 +56,7 @@
 
 // Navigation
 @import "components/navigation/clickMenu";
+@import "components/navigation/hamburger";
 //@import "components/navigation/clickMenu-mega";
 //@import "components/navigation/clickMenu-sliding";
 //@import "components/navigation/clickMenu-theme";
@@ -68,7 +73,6 @@
 // Modules
 @import "components/modules/events";
 @import "components/modules/news";
-@import "components/modules/imagegallery";
 @import "components/modules/alerts";
 @import "components/modules/lists";
 
@@ -77,9 +81,8 @@
    Vendor Imports
    ================================================================ */
 
+@import "vendor/tiny-slider.scss";
 @import "vendor/colorbox";
-@import "vendor/slick";
-@import "vendor/slick-theme";
 @import "vendor/focus-overlay";
 
 

@@ -1,0 +1,62 @@
+.site-footer {
+    background: $color-primary;
+    color: $color-invert;
+    padding: 20px 0;
+
+    a {
+        color: $color-invert;
+        text-decoration: underline;
+
+        &:hover,
+        &:focus {
+            text-decoration: none;
+        }
+    }
+}
+
+.footer-copyright {
+    text-align: center;
+}
+
+.footer-copyright-text {
+    margin: 0 0 5px;
+}
+
+.footer-copyright-links a {
+    display: block;
+}
+
+@media (min-width: $bp-mw) {
+    .footer-copyright {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    .footer-copyright-text {
+        margin: 0;
+    }
+
+    .footer-copyright-links a {
+        position: relative;
+        display: inline-block;
+        margin: 0 12px 0 0;
+
+        &::after {
+            content: "|";
+            position: absolute;
+            display: inline-block;
+            top: 50%;
+            right: -10px;
+            transform: translateY(-56%);
+            font-weight: 400;
+            font-size: 0.9em;
+        }
+
+        &:last-child {
+            &::after {
+                content: none;
+            }
+        }
+    }
+}

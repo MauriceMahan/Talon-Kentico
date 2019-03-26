@@ -17,45 +17,15 @@
 	</head>
 
 	<body>
-        {% include "partials/svg-legend.html" %}
-		<header id="site-header" class="header" role="banner">
-            <a class="skip-link" href="#maincontent">Skip to Main Content</a>
-			<div class="header-inner">
-                <div class="container">
-                    <div class="header-top row">
-                        <div class="col-lg-4">
-                            <a href="home.html" class="brand"><img src="../images/logo.jpg" alt="AE" /></a>
-                        </div>
-                        <div class="col-lg-8">
-                            <div class="site-search"></div>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-md-12">
-                            {% include "partials/navigation.html" %}
-                        </div>
-                    </div>
-                </div>
-            </div>
-		</header>
-
-		<main id="site-main" role="main">
-	  		{% block content %} {% endblock %}
-		</main>
-
-		<footer id="site-footer" role="contentinfo">
-            <div class="footer-top">
-                <div class="container">
-                    <div class="row">
-                        <div class="col-md-12">
-                            Copyright &copy; 2018 Americaneagle.com
-                        </div>
-                    </div>
-                </div>
-            </div>
-		</footer>
+        <div class="site-container">
+            {% include "partials/header.html" %}
+            <main id="site-main" role="main">
+                  {% block content %} {% endblock %}
+            </main>
+            {% include "partials/footer.html" %}
+        </div>
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
-        <script src="../js/all.js"></script>
+        <script src="../js/all.js"></script> <!-- Use all.min.js on production sites -->
         {% include "partials/template-listing.html" %}
 	</body>
 </html>

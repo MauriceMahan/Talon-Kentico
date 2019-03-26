@@ -11,24 +11,24 @@
     &.opened .sub-menu > ul { max-height:80em; opacity:1; }
     &.animated .sub-menu > ul { overflow:visible; z-index:10; }
     &.animating .sub-menu { z-index:-1; }
-} 
+}
 
-@media (min-width:$bp-m){
+@media (min-width:$bp-mw){
 
     [data-type="sliding"] .sub-menu {
         position:absolute;
         transition: all $nav-transition-speed ease-in-out;
-     
+
         > ul {
             display:block;
             position:absolute; top:100%; left:0; z-index:-1;
             width:180px;
             background:$nav-subLinkBackground;
-            transition: max-height $nav-transition-speed ease-in-out, 
-                        opacity $nav-transition-speed ease-in-out, 
-                        left $nav-transition-speed ease-in-out, 
+            transition: max-height $nav-transition-speed ease-in-out,
+                        opacity $nav-transition-speed ease-in-out,
+                        left $nav-transition-speed ease-in-out,
                         right $nav-transition-speed ease-in-out;
-                        
+
             li { position:static; }
 
             > li > ul { position:absolute; top:0; }
@@ -40,12 +40,12 @@
 
         /* ================= ESSENTIAL SLIDING FUNCTIONALITY ================= */
 
-        &.cm-js-inactive {  
-            position:relative; left:0 !important; 
+        &.cm-js-inactive {
+            position:relative; left:0 !important;
             width:100% !important;
 
-            > ul { 
-                min-width:100%; 
+            > ul {
+                min-width:100%;
 
                 > li > ul { padding:0; max-width:0; }
             }

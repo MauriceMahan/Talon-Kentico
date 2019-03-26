@@ -45,7 +45,11 @@ $nav-barBackground: #333;
 $nav-mainLinkBackground: #666;
 $nav-subLinkBackground: #999;
 
+// Transitions
+$trans: all 0.18s ease-in-out;
+$trans2: all 0.25s ease-in-out;
 
 // Grid
+$container-size: 89.375rem; // 1430px
 $grid-gutter: 15px;
 $grid-gutter-em: 0.938em; // Changing grid gutter to em causes a compiling error :/

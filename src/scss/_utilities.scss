@@ -1,18 +1,18 @@
 /* ================================================================
    MIXINS
    ================================================================ */
-   
+
 
 
 
 /* ================================================================
-   REM Mixin 
+   REM Mixin
    ================================================================ */
 
 // usage: @include x-rem(font-size, 14px)
 // usage: @include x-rem(margin, 0 12px 2 1.2)
 // usage: @include x-rem(padding, 1.5 24px)
-// 
+//
 // thanks to Eric Meyer for https://github.com/ericam/susy
 // and Hans Christian Reinl for http://drublic.de/blog/rem-fallback-sass-less/
 
@@ -21,7 +21,7 @@
   $base-font-size: 16px; // should be consistent with your html/body font-size
   $px-values: ();
   $rem-values: ();
- 
+
   // Loop through the $values list
   @each $value in $values {
     // For each property value, if it's in rem or px, derive both rem and
@@ -43,22 +43,18 @@
     } @else if $value == auto {
       // auto - don't add px or rem
       $px-values: join($px-values, auto);
-      $rem-values: join($rem-values, auto);      
+      $rem-values: join($rem-values, auto);
     } @else {
       // unitless value - use those directly as rem and calculate the px-fallback
       $px-values: join($px-values, round($value * $base-font-size));
       $rem-values: join($rem-values, #{$value}rem);
     }
   }
- 
+
   // output the converted rules
   #{$property}: $px-values;
   #{$property}: $rem-values;
 }
-
-
-
-
 
 /* ================================================================
    CLEARFIX MIXIN
@@ -78,9 +74,43 @@
 	}
 }
 
+/* ================================================================
+RESET STYLES BUTTON MIXIN
 
+- EXAMPLE:
 
+button {
+  @include resetBtn;
+}
+================================================================ */
 
+@mixin resetBtn {
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  transition: $trans;
+}
+
+/* ================================================================
+INPUT PLACEHOLDER MIXIN
+
+- EXAMPLE:
+
+input {
+  @include placeholder {
+    color: red;
+    opacity: 1;
+  }
+}
+================================================================ */
+
+@mixin placeholder {
+  &::-webkit-input-placeholder {@content}
+  &:-moz-placeholder           {@content}
+  &::-moz-placeholder          {@content}
+  &:-ms-input-placeholder      {@content}
+}
 
 /* ================================================================
    PSUEDO MIXIN
@@ -114,15 +144,15 @@
   // 16px baseline (256px) s = small
   @else if $point == s {
     @media (min-width: $bp-s) { @content; }
-  } 
+  }
   // 16px baseline (580px) sw = small-wide
   @else if $point == sw {
     @media (min-width: $bp-sw) { @content; }
-  } 
+  }
   // 16px baseline (580px - 767px) sw-m = small-wide TO medium
   @else if $point == sw-m {
     @media (min-width:$bp-sw) and (max-width:$bp-m)  { @content; }
-  } 
+  }
   // 16px baseline (256px - 767px) s-m = small TO medium
   @else if $point == s-m {
     @media (min-width:$bp-s) and (max-width:$bp-m)  { @content; }
@@ -154,7 +184,7 @@
   @else if $point == l {
     @media (min-width: $bp-l) { @content; }
   }
-  // 16px baseline (1024px) lg = large 
+  // 16px baseline (1024px) lg = large
   @else if $point == lg {
     @media (min-width: $bp-lg) { @content; }
   }

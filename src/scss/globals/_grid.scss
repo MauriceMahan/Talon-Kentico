@@ -3,9 +3,12 @@
    ================================================================ */
 
 .container {
-  width:100%; max-width:90em;
-  margin-right: auto; margin-left: auto;
-  padding-left: $grid-gutter-em; padding-right: $grid-gutter-em;
+    width: 100%;
+    max-width: $container-size;
+    margin-right: auto;
+    margin-left: auto;
+    padding-left: $grid-gutter-em;
+    padding-right: $grid-gutter-em;
 }
 
 /*** In case you want this instead of the width/max-width above.

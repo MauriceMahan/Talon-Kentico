@@ -6,8 +6,8 @@
 
 .cm-menu {
     position:relative;
-    margin:0; padding:0; 
-    list-style:none; 
+    margin:0; padding:0;
+    list-style:none;
     background:$nav-barBackground;
 
     a, a:visited { color:$color-invert; text-decoration:none; }
@@ -15,32 +15,32 @@
 
     &:focus { outline:3px solid blue; }
 
-    ul { 
-        margin:0; padding:0; 
+    ul {
+        margin:0; padding:0;
         max-height:0;
-        list-style:none; 
-        background:$nav-mainLinkBackground;   
+        list-style:none;
+        background:$nav-mainLinkBackground;
         opacity:0;
         overflow:hidden;
-        transition: max-height $nav-transition-speed ease-in-out, 
+        transition: max-height $nav-transition-speed ease-in-out,
                     opacity $nav-transition-speed ease-in-out;
     }
 
-    li { 
+    li {
         position:relative;
         border-top:1px solid $nav-subLinkBackground;
 
         &:first-child { border-top:0; }
 
         a {
-            display:block;  
+            display:block;
             position:relative;
-            padding:10px; 
+            padding:10px;
             background:$nav-subLinkBackground;
         }
     }
 
-    .has-sub:after, 
+    .has-sub:after,
     .expander-wrap .has-sub > span:after {
         content:" ";
         display:inline-block;
@@ -73,7 +73,7 @@
     ul .opened > .has-sub:after,
     ul .opened > .expander-wrap .has-sub > span:after { border-top-color:#fff; }
 
-    .opened > ul { max-height:80em; opacity:1; } 
+    .opened > ul { max-height:80em; opacity:1; }
 }
 
 .toggle-menu + .cm-menu {
@@ -83,7 +83,7 @@
     transition: max-height $nav-transition-speed ease-in-out, opacity $nav-transition-speed ease-in-out;
 }
 
-.cm-js-active { 
+.cm-js-active {
     .cm-menu { max-height:80em; opacity:1; }
 }
 
@@ -91,8 +91,8 @@
 /* ================= SEPARATE EXPANDERS OPTION IS ENABLED ================= */
 
 .cm-menu .expander-wrap {
-    display:table; 
-    width:100%; 
+    display:table;
+    width:100%;
 
     a { display:table-cell; }
 
@@ -130,7 +130,7 @@
 
 /* ================= MENU OPEN FUNCTIONALITY ADDED ON SETUP ================= */
 
-@media (min-width:$bp-m){
+@media (min-width:$bp-mw){
     .toggle-menu + .cm-menu { max-height:80em; opacity:1; overflow:visible; }
 
     .cm-menu {
@@ -149,7 +149,7 @@
 /*  NAV BAR STYLE TYPE
     ================================================================*/
 
-@media (min-width:$bp-m) {
+@media (min-width:$bp-mw) {
     .nav-bar {
         li { border-top:0; }
 
@@ -168,7 +168,7 @@
                 }
 
                 > ul { position:absolute; }
-            } 
+            }
         }
 
         .has-sub span:after { position:static; margin-top:10px; }
@@ -198,16 +198,16 @@
 /*  DROP DOWN NAVIGATION
     ================================================================*/
 
-@media (min-width:$bp-m){
+@media (min-width:$bp-mw){
     [data-type="dropdown"] {
         ul {
             display:block;
             position:absolute; top:100%; left:0; z-index:-1;
             width:100%; min-width:180px;
-            background:$nav-subLinkBackground;  
-            transition: max-height $nav-transition-speed ease-in-out, 
-                        opacity $nav-transition-speed ease-in-out, 
-                        left $nav-transition-speed ease-in-out, 
+            background:$nav-subLinkBackground;
+            transition: max-height $nav-transition-speed ease-in-out,
+                        opacity $nav-transition-speed ease-in-out,
+                        left $nav-transition-speed ease-in-out,
                         right $nav-transition-speed ease-in-out;
 
             ul { top:-5px; }
@@ -224,9 +224,9 @@
 
     .nav-bar ul li[data-type="dropdown"] li li { margin-left:5px; margin-right:5px; }
 
-    [data-type="dropdown"] a + .has-sub { 
+    [data-type="dropdown"] a + .has-sub {
         width:0; min-height:0; height:100%;
-        
+
         > span { min-height:0; height:100%; }
     }
 }
@@ -236,26 +236,26 @@
 /*================================================================
                  NAVIGATION TOGGLE STYLES
 ================================================================*/
- 
+
 .toggle-menu {
     display:block;
-    position:relative;  
-    width:50px; height:46px; 
+    position:relative;
+    width:50px; height:46px;
     background:$nav-subLinkBackground;
 
     &:before, &:after, > span:before {
         content:" ";
         position:absolute; left:15%;
-        width:70%; height:3px; 
+        width:70%; height:3px;
         border-radius:2px;
         background:#fff;
-    } 
+    }
     &:before { top:11px; }
     &:after { top:21px; }
-    
+
     > span:before { top:31px; }
 }
 
-@media (min-width:$bp-m) {
+@media (min-width:$bp-mw) {
     .toggle-menu { display:none; }
 }

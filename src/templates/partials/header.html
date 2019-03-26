@@ -1,0 +1,40 @@
+{% include "partials/svg-legend.html" %}
+<header id="site-header" class="site-header" role="banner">
+    <a class="visually-hidden focusable" href="#maincontent">Skip to Main Content</a>
+    <div class="header-container container">
+        <div class="header-row row">
+            <div class="header-col col-xs-12">
+                <div class="header-top">
+                    <button class="header-mobile-btn hamburger-menu" data-expander="header-nav" data-expander-css>
+                        <span class="hamburger-box">
+                            <span class="hamburger-inner">
+                                <span class="visually-hidden">Toggle navigation</span>
+                            </span>
+                        </span>
+                    </button>
+                    <div class="header-logo">
+                        <a href="/" class="brand"><img src="../images/logo.png" alt="AE" /></a>
+                    </div>
+                    <div id="header-search" class="header-search">
+                        <input class="header-search-input" type="text" placeholder="Search site">
+                        <button class="header-search-submit">
+                            <svg aria-hidden="true" focusable="false">
+                                <use xlink:href="#icon-search" />
+                            </svg>
+                            <span class="visually-hidden">Submit search</span>
+                        </button>
+                    </div>
+                    <button class="header-search-trigger" data-expander="header-search" data-expander-css>
+                        <svg aria-hidden="true" focusable="false">
+                            <use xlink:href="#icon-search" />
+                        </svg>
+                        <span class="visually-hidden">Toggle search</span>
+                    </button>
+                </div>
+                <div id="header-nav" class="header-bottom">
+                    {% include "partials/navigation.html" %}
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
