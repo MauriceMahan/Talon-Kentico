@@ -35,7 +35,8 @@ const browserSync = require('browser-sync').create(),
 
 // Nunjucks templating
 const nunjucksRender = require('gulp-nunjucks-render');
-
+const fs = require("fs");
+const path = require("path");
 
 
 
@@ -64,6 +65,14 @@ var date = new Date(),
       }
     };
 
+// Creates array of all the files in the pages folder
+const getTemplates = () => {
+    return fs
+        .readdirSync(path.join(__dirname, "/src/templates/"))
+        .filter(function(file) {
+            return (file.indexOf('.') !== 0) && (file.slice(-5) === '.html' && file !== "index.html");
+        });
+}
 
 
 
@@ -105,6 +114,7 @@ gulp.task('global-scripts', function() {
     return gulp.src([
             // Load in this order
             'src/js/globals/plugins.js',
+            'src/js/globals/utils.js',
             'src/js/globals/*.js'
         ])
         .pipe(plumber({ errorHandler: onError }))
@@ -142,12 +152,12 @@ gulp.task('images', function() {
         .pipe(gulp.dest('dist/images'))
 });
 
-
 // HTML - Templating
 gulp.task('nunjucks', function() {
   return gulp.src('src/templates/**/*.html')
     .pipe(nunjucksRender({
-        path: ['src/templates']
+        path: ['src/templates'],
+        data: { templates: getTemplates() }
     }))
     .pipe(gulp.dest('dist/templates'))
     .pipe(reload({stream: true}));

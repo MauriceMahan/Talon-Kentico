@@ -1,6 +1,7 @@
 {% extends "partials/layout.html" %}
 
-{% block pagetitle %} Homepage {% endblock %}
+{% set pagetitle = "Home" %}
+{% block pagetitle %} {{ pagetitle }} {% endblock %}
 
 {% block content %}
 <div class="container">

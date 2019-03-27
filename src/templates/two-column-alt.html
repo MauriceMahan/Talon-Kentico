@@ -1,6 +1,7 @@
 {% extends "partials/layout.html" %}
 
-{% block pagetitle %} Two Column Alternate Template {% endblock %}
+{% set pagetitle = "Two Column Alternate Template" %}
+{% block pagetitle %} {{ pagetitle }} {% endblock %}
 
 {% block content %}
 <div id="maincontent" class="container">

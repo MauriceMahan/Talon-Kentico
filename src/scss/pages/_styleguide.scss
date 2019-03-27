@@ -59,3 +59,13 @@ html {
     }
   }
 }
+
+.container .talon-templates-wrapper {
+  position: static;
+  width: auto;
+  background: none;
+  border: none;
+  padding: 0 0 1em 1em;
+
+  &::before { content: none; }
+}

@@ -1,0 +1,51 @@
+<!-- Template listing for development only START -->
+<style>
+        .talon-templates-wrapper {
+            position: fixed;
+            top: 0;
+            left: -300px;
+            width: 300px;
+            background: #fff;
+            transition: all 0.2s ease-out;
+            border: 2px solid #000;
+            padding: 20px;
+            z-index: 9001;
+        }
+
+        .talon-templates-wrapper::before {
+            content: "Pages";
+            display: block;
+            position: absolute;
+            top: 10px;
+            left: 100%;
+            padding: 5px;
+            background: #fff;
+            border: 2px solid #000;
+            border-left: 1px solid #fff;
+            cursor: pointer;
+            font-size: 14px;
+        }
+
+        .talon-templates-wrapper ul {
+            padding: 0;
+            margin: 0;
+        }
+
+        .talon-templates-wrapper a {
+            display: inline-block;
+        }
+
+        .talon-templates-wrapper:hover,
+        .templates-wrapper:focus {
+            left: 0;
+        }
+    </style>
+    <div class="talon-templates-wrapper">
+        <ul>
+            {% for template in templates %}
+                {% from templates[loop.index0] import pagetitle %}
+                <li><a href="{{ template }}">{{ pagetitle }}</a></li>
+            {% endfor %}
+        </ul>
+    </div>
+    <!-- Template listing for development only END -->

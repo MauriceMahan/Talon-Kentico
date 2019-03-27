@@ -6,7 +6,7 @@
 		<!-- Mobile-friendly viewport -->
 		<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-        <title> Style Guide </title>
+        <title> Styleguide </title>
 
 		<!-- Style sheet link -->
         <link href="../css/main.min.css" rel="stylesheet" media="all">
@@ -146,6 +146,75 @@
             <h1>Style Guide</h1>
 
             <hr />
+
+            <!-- Templates -->
+            <h2>Templates</h2>
+            <!-- Template listing for development only START -->
+<style>
+        .talon-templates-wrapper {
+            position: fixed;
+            top: 0;
+            left: -300px;
+            width: 300px;
+            background: #fff;
+            transition: all 0.2s ease-out;
+            border: 2px solid #000;
+            padding: 20px;
+            z-index: 9001;
+        }
+
+        .talon-templates-wrapper::before {
+            content: "Pages";
+            display: block;
+            position: absolute;
+            top: 10px;
+            left: 100%;
+            padding: 5px;
+            background: #fff;
+            border: 2px solid #000;
+            border-left: 1px solid #fff;
+            cursor: pointer;
+            font-size: 14px;
+        }
+
+        .talon-templates-wrapper ul {
+            padding: 0;
+            margin: 0;
+        }
+
+        .talon-templates-wrapper a {
+            display: inline-block;
+        }
+
+        .talon-templates-wrapper:hover,
+        .templates-wrapper:focus {
+            left: 0;
+        }
+    </style>
+    <div class="talon-templates-wrapper">
+        <ul>
+            
+                
+                <li><a href="home.html">Home</a></li>
+            
+                
+                <li><a href="one-column.html">One Column Template</a></li>
+            
+                
+                <li><a href="styleguide.html">Styleguide</a></li>
+            
+                
+                <li><a href="three-column.html">Three Column Template</a></li>
+            
+                
+                <li><a href="two-column-alt.html">Two Column Alternate Template</a></li>
+            
+                
+                <li><a href="two-column.html">Two Column Template</a></li>
+            
+        </ul>
+    </div>
+    <!-- Template listing for development only END -->
 
             <!-- Colors -->
 
@@ -300,6 +369,276 @@
                 </div>
             </div>
 
+            <!-- Forms -->
+
+            <h2>Forms (Including errors)</h2>
+            <div class="FormPanel">
+                <table class="EditingFormTable">
+                    <tbody>
+                        <tr>
+                            <td class="FieldLabel" title="Tooltip goes here">
+                                <label class="EditingFormLabel" for="control-0">Text box:</label>
+                            </td>
+                            <td class="EditingFormValueCell" title="Tooltip goes here">
+                                <div class="EditingFormControlNestedControl editing-form-control-nested-control">
+                                    <input type="text" value="Default value" maxlength="500" id="control-0" class="form-control">
+                                </div>
+                                <div class="ExplanationText">Explanation text goes here. All fields but this and checkboxes are required.</div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="FieldLabel">
+                                <label class="EditingFormLabel" for="control-1">Regular text box:</label>
+                            </td>
+                            <td class="EditingFormValueCell">
+                                <div class="EditingFormControlNestedControl editing-form-control-nested-control Error">
+                                    <input type="text" maxlength="500" id="control-1" class="form-control">
+                                </div>
+                                <span class="EditingFormErrorLabel">Please enter a value.</span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="FieldLabel">
+                                <label class="EditingFormLabel" for="control-2">Check box:</label>
+                            </td>
+                            <td class="EditingFormValueCell">
+                                <div class="EditingFormControlNestedControl editing-form-control-nested-control">
+                                    <span class="CheckBoxField checkbox">
+                                                <input id="control-2" type="checkbox">
+                                                    <label for="control-2">&nbsp;</label>
+                                                </span>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="FieldLabel">
+                                <label class="EditingFormLabel" for="control-3">Check box:</label>
+                            </td>
+                            <td class="EditingFormValueCell">
+                                <div class="EditingFormControlNestedControl editing-form-control-nested-control">
+                                    <span class="CheckBoxField checkbox">
+                                                    <input id="control-3" type="checkbox" checked="checked">
+                                                        <label for="control-3">&nbsp;</label>
+                                                    </span>
+                                </div>
+                                <div class="ExplanationText">Default checked. Not required since checkbox</div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="FieldLabel">
+                                <label class="EditingFormLabel" for="control-4">Drop-down list:</label>
+                            </td>
+                            <td class="EditingFormValueCell">
+                                <div class="EditingFormControlNestedControl editing-form-control-nested-control">
+                                    <select id="control-4" class="DropDownField form-control">
+                                        <option selected="selected" value="Option 1">Option 1</option>
+                                        <option value="Option 2">Option 2</option>
+                                        <option value="Option 3">Option 3</option>
+                                    </select>
+                                    <div class="autocomplete"></div>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="FieldLabel">
+                                <label class="EditingFormLabel" for="control-5">Email:</label>
+                            </td>
+                            <td class="EditingFormValueCell">
+                                <div class="EditingFormControlNestedControl editing-form-control-nested-control Error">
+                                    <input type="text" maxlength="254" id="control-5" class="form-control">
+                                    <span class="form-control-error" style="display:none;"></span>
+                                </div>
+                                <span class="EditingFormErrorLabel">Please enter a value.</span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="FieldLabel">
+                                <label class="EditingFormLabel" for="control-6">List box:</label>
+                            </td>
+                            <td class="EditingFormValueCell">
+                                <div class="EditingFormControlNestedControl editing-form-control-nested-control Error">
+                                    <select size="4" multiple="multiple" id="control-6" class="form-control">
+                                        <option value="Option 1">Option 1</option>
+                                        <option value="Option 2">Option 2</option>
+                                        <option value="Option 3">Option 3</option>
+                                    </select>
+                                </div>
+                                <span class="EditingFormErrorLabel">Please enter a value.</span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="FieldLabel">
+                                <label class="EditingFormLabel" for="control-7">Country selector:</label>
+                            </td>
+                            <td class="EditingFormValueCell">
+                                <div class="EditingFormControlNestedControl editing-form-control-nested-control Error">
+                                    <div class="country-selector">
+                                        <div>
+                                            <div class="control-group-inline">
+                                                <select id="control-7" class="DropDownField form-control">
+                                                    <option value="Afghanistan" data-hash="c67faa2e97d543f0b2b85ba58e8cfa35b25abad4603b427f7d1f3b64f5e24d0c">Afghanistan</option>
+                                                </select>
+                                            </div>
+                                            <input type="hidden" id="control-8">
+                                            <input type="hidden" id="control-9" value="1b8bb396-6976-40e6-96d5-7573514af360">
+                                            <input type="hidden" id="control-10">
+                                            <input type="hidden" id="control-11">
+                                            <input type="hidden" id="control-12" value="cb52efc107237789f7be03c58bf9a23c21aeec402197b25b702a68b4b6fe7a66">
+                                            <input type="hidden" id="control-13">
+                                        </div>
+                                        <div></div>
+                                    </div>
+                                </div>
+                                <span class="EditingFormErrorLabel">Please enter a value.</span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="FieldLabel">
+                                <span class="EditingFormLabel">Multiple choice:</span>
+                            </td>
+                            <td class="EditingFormValueCell">
+                                <div class="EditingFormControlNestedControl editing-form-control-nested-control Error">
+                                    <span class="checkbox checkbox-list-vertical">
+                                                                                    <input id="control-14" type="checkbox" value="Option 1">
+                                                                                        <label for="control-14">Option 1</label>
+                                                                                        <br>
+                                                                                            <input id="control-15" type="checkbox" value="Option 2">
+                                                                                                <label for="control-15">Option 2</label>
+                                                                                                <br>
+                                                                                                    <input id="control-16" type="checkbox" value="Option 3">
+                                                                                                        <label for="control-16">Option 3</label>
+                                                                                                    </span>
+                                </div>
+                                <span class="EditingFormErrorLabel">Please enter a value.</span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="FieldLabel">
+                                <span class="EditingFormLabel">Radio buttons:</span>
+                            </td>
+                            <td class="EditingFormValueCell">
+                                <div class="EditingFormControlNestedControl editing-form-control-nested-control Error">
+                                    <span class="radio radio-list-vertical">
+                                                                                                        <input id="control-17" type="radio" value="Option 1">
+                                                                                                            <label for="control-17">Option 1</label>
+                                                                                                            <br>
+                                                                                                                <input id="control-18" type="radio" value="Option 2">
+                                                                                                                    <label for="control-18">Option 2</label>
+                                                                                                                    <br>
+                                                                                                                        <input id="control-19" type="radio" value="Option 3">
+                                                                                                                            <label for="control-19">Option 3</label>
+                                                                                                                        </span>
+                                </div>
+                                <span class="EditingFormErrorLabel">Please enter a value.</span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="FieldLabel">
+                                <label class="EditingFormLabel" for="control-20">Text area:</label>
+                            </td>
+                            <td class="EditingFormValueCell">
+                                <div class="EditingFormControlNestedControl editing-form-control-nested-control Error">
+                                    <textarea rows="2" cols="20" id="control-20" class="form-control"></textarea>
+                                </div>
+                                <span class="EditingFormErrorLabel">Please enter a value.</span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="FieldLabel">
+                                <label class="EditingFormLabel" for="control-21">Text box:</label>
+                            </td>
+                            <td class="EditingFormValueCell">
+                                <div class="EditingFormControlNestedControl editing-form-control-nested-control Error">
+                                    <input type="text" maxlength="500" id="control-21" class="form-control">
+                                </div>
+                                <span class="EditingFormErrorLabel">Please enter a value.</span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="FieldLabel">
+                                <label class="EditingFormLabel" for="control-22">U.S. phone number:</label>
+                            </td>
+                            <td class="EditingFormValueCell">
+                                <div class="EditingFormControlNestedControl editing-form-control-nested-control Error">
+                                    <span class="form-control-text">(</span>
+                                    <input type="text" maxlength="3" id="control-22" class="input-width-15 form-control">
+                                    <span class="form-control-text">)</span>
+                                    <input type="text" maxlength="3" id="control-23" class="input-width-15 form-control">
+                                    <span class="form-control-text">-</span>
+                                    <input type="text" maxlength="4" id="control-24" class="input-width-20 form-control">
+                                    <label for="control-23" class="sr-only">Second three digits</label>
+                                    <label for="control-24" class="sr-only">Last four digits</label>
+                                </div>
+                                <span class="EditingFormErrorLabel">Please enter a value.</span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="FieldLabel">
+                                <label class="EditingFormLabel" for="control-25">U.S. ZIP code:</label>
+                            </td>
+                            <td class="EditingFormValueCell">
+                                <div class="EditingFormControlNestedControl editing-form-control-nested-control Error">
+                                    <input type="text" maxlength="5" id="control-25" class="input-width-20 form-control">
+                                </div>
+                                <span class="EditingFormErrorLabel">Please enter a value.</span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="FieldLabel">
+                                <label class="EditingFormLabel" for="control-26">Upload file:</label>
+                            </td>
+                            <td class="EditingFormValueCell">
+                                <div class="EditingFormControlNestedControl editing-form-control-nested-control Error">
+                                    <div class="uploader">
+                                        <div class="uploader-main">
+                                            <div class="uploader-upload">
+                                                <input type="file" id="control-26" class="uploader-input-file">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <input type="submit" value="" id="control-27" class="HiddenButton" style="display:none;">
+                                </div>
+                                <span class="EditingFormErrorLabel">Please enter a value.</span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="FieldLabel">
+                                <label class="EditingFormLabel" for="control-28">Security code:</label>
+                            </td>
+                            <td class="EditingFormValueCell">
+                                <div class="EditingFormControlNestedControl editing-form-control-nested-control Error">
+                                    <div>
+                                        <span>Enter security code:</span>
+                                    </div>
+                                    <table class="CaptchaTable">
+                                        <tbody>
+                                            <tr>
+                                                <td>
+                                                    <input type="text" id="control-28" class="CaptchaTextBox form-control">
+                                                </td>
+                                                <td>
+                                                    &nbsp;
+                                                    <img src="//placehold.it/80x20" alt="Security code">
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                                <span class="EditingFormErrorLabel">Please enter a value.</span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="EditingFormButtonLeftCell"></td>
+                            <td class="EditingFormButtonCell">
+                                <input type="submit" value="Submit" id="control-29" class="FormButton btn btn-primary">
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- Expanders -->
+
             <h2>Expandable examples</h2>
             <div class="expandable-examples">
                 <div>
@@ -355,8 +694,8 @@
                 </div>
             </div>
 
-            <!-- Global SVGs -->
 
+            <!-- Global SVGs -->
             <h2>SVGs</h2>
             <div id="svg-list"></div>
         </div>
@@ -407,6 +746,72 @@
             </div>
 		</footer>
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
-		<script src="../js/all.min.js"></script>
+        <script src="../js/all.js"></script>
+        <!-- Template listing for development only START -->
+<style>
+        .talon-templates-wrapper {
+            position: fixed;
+            top: 0;
+            left: -300px;
+            width: 300px;
+            background: #fff;
+            transition: all 0.2s ease-out;
+            border: 2px solid #000;
+            padding: 20px;
+            z-index: 9001;
+        }
+
+        .talon-templates-wrapper::before {
+            content: "Pages";
+            display: block;
+            position: absolute;
+            top: 10px;
+            left: 100%;
+            padding: 5px;
+            background: #fff;
+            border: 2px solid #000;
+            border-left: 1px solid #fff;
+            cursor: pointer;
+            font-size: 14px;
+        }
+
+        .talon-templates-wrapper ul {
+            padding: 0;
+            margin: 0;
+        }
+
+        .talon-templates-wrapper a {
+            display: inline-block;
+        }
+
+        .talon-templates-wrapper:hover,
+        .templates-wrapper:focus {
+            left: 0;
+        }
+    </style>
+    <div class="talon-templates-wrapper">
+        <ul>
+            
+                
+                <li><a href="home.html">Home</a></li>
+            
+                
+                <li><a href="one-column.html">One Column Template</a></li>
+            
+                
+                <li><a href="styleguide.html">Styleguide</a></li>
+            
+                
+                <li><a href="three-column.html">Three Column Template</a></li>
+            
+                
+                <li><a href="two-column-alt.html">Two Column Alternate Template</a></li>
+            
+                
+                <li><a href="two-column.html">Two Column Template</a></li>
+            
+        </ul>
+    </div>
+    <!-- Template listing for development only END -->
 	</body>
 </html>
