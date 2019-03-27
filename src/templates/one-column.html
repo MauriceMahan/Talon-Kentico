@@ -4,11 +4,16 @@
 {% block pagetitle %} {{ pagetitle }} {% endblock %}
 
 {% block content %}
-<div id="maincontent" class="container">
-	<div class="row">
-		<div class="col-md-12">
-			<h1>One Column</h1>
-		</div>
-	</div>
+<div class="page-header" style="background-image: url('//placehold.it/1920x275');">
+    <div class="container">
+        <div class="row">
+            <div class="col-xs-12">
+                <div class="page-header-inner">
+                    <h1 class="page-header-big">{{ pagetitle }}</h1>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
+
 {% endblock %}

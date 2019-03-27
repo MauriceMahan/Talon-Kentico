@@ -2,6 +2,9 @@
     /** Click Navigation **/
     $(".main-nav").clickMenu();
 
+    /** Cross browser SVG loading support **/
+    svg4everybody();
+
     /** FocusOverlay **/
     $("body").focusOverlay();
 

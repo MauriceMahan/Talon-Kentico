@@ -147,7 +147,15 @@ gulp.task('individual-scripts', function() {
 // Images - minification
 gulp.task('images', function() {
     return gulp.src('src/images/**/*')
-        .pipe(imagemin())
+        .pipe(imagemin([
+            imagemin.svgo({
+                plugins: [
+                    {
+                        cleanupIDs: false
+                    }
+                ]
+            })
+        ]))
         .pipe(notify(notifyGeneric))
         .pipe(gulp.dest('dist/images'))
 });

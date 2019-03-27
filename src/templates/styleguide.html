@@ -501,33 +501,37 @@
     </div>
 </div>
 <script>
-    var svgList = document.getElementById("svg-list"),
-        svgSymbols = document.querySelectorAll(".svg-legend svg symbol"),
-        i;
+    const outputElement = document.getElementById("svg-list");
+    const svgLegend = "../images/svg-legend.svg";
+    const parser = new DOMParser();
 
-    for (i = 0; i < svgSymbols.length; ++i) {
-        var newItem = document.createElement("div"),
-            newSvg = document.createElementNS("http://www.w3.org/2000/svg", "svg"),
-            newSvgUse = document.createElementNS("http://www.w3.org/2000/svg", "use"),
-            newItemTitle = document.createElement("div"),
-            newItemIdent = document.createElement("div"),
-            svgId = svgSymbols[i].getAttribute("id"),
-            svgIdText = document.createTextNode(`#${svgId}`),
-            svgTitle = document.createTextNode(svgSymbols[i].querySelector("title").textContent);
+    fetch(svgLegend)
+        .then(response => response.text())
+        .then(svg => {
+            const parsedSvg = parser.parseFromString(svg, "image/svg+xml");
+            const svgSymbols = parsedSvg.querySelectorAll("symbol");
 
-        newItem.classList.add("item");
-        newItemTitle.classList.add("title");
-        newItemIdent.classList.add("ident");
+            svgSymbols.forEach(symbol => {
+                const item = {
+                    id: symbol.getAttribute("id"),
+                    title: symbol.querySelector("title") ? symbol.querySelector("title").textContent : ""
+                }
 
-        newSvgUse.setAttributeNS("http://www.w3.org/1999/xlink", "xlink:href", `#${svgId}`);
-        newItemTitle.appendChild(svgTitle);
-        newItemIdent.appendChild(svgIdText);
+                const markup = `
+                    <div class="item">
+                        <svg>
+                            <use xlink:href="${svgLegend}#${item.id}" />
+                        </svg>
+                        <div class="title">${item.title}</div>
+                        <div class="ident">#${item.id}</div>
+                    </div>
+                `;
 
-        newSvg.appendChild(newSvgUse);
-        newItem.appendChild(newSvg);
-        newItem.appendChild(newItemTitle);
-        newItem.appendChild(newItemIdent);
-        svgList.appendChild(newItem);
-    }
+                outputElement.insertAdjacentHTML('beforeend', markup);
+            });
+        })
+        .catch(error => {
+            console.log(error);
+        });
 </script>
 {% endblock %}
