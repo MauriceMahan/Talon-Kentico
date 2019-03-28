@@ -39,7 +39,7 @@ if (/iPad|iPhone|iPod/g.test(navigator.userAgent)) {
      * Setup expanding functionality for [data-expander] elements (e.g. accordions,
      * tabs, expanders, menus, etc.)
      */
-    talonUtil.setupToggles = () => {
+    talonUtil.setupToggles = function() {
         $("[data-expander]:not([data-expander-loaded])").each(function (key) {
             var $this = $(this),
                 $toggle, // Toggle element
@@ -82,19 +82,23 @@ if (/iPad|iPhone|iPod/g.test(navigator.userAgent)) {
 
             // By default `jsAnimation` will be used unless data-expander-css is added
             var jsAnimation = {
-                hide: function() {
+                hide: function($el) {
+                    $el = $el || $target;
+
                     // Remove `active` state after slide animation
-                    $target.slideUp(animateTime, function() {
-                        $target.removeClass("active");
+                    $el.slideUp(animateTime, function() {
+                        $el.removeClass("active");
 
                         // Update a11y to describe as closed
                         $toggle.add($relatedToggles).attr("aria-expanded", "false");
                     });
                 },
-                show: function() {
+                show: function($el) {
+                    $el = $el || $target;
+
                     // Add `active` state after slide animation
-                    $target.slideDown(animateTime, function() {
-                        $target.addClass("active");
+                    $el.slideDown(animateTime, function() {
+                        $el.addClass("active");
                     });
                 }
             }
@@ -104,29 +108,33 @@ if (/iPad|iPhone|iPod/g.test(navigator.userAgent)) {
              * used with appropriate show/hide CSS animations if you go this route
              */
             var cssAnimation = {
-                hide: function() {
+                hide: function($el) {
+                    $el = $el || $target;
+
                     /**
                      * Classes to use CSS animation for show/hiding.
                      * This will also allow us to set display to block/none
                      */
-                    $target.removeClass("target-show");
-                    $target.addClass("target-hide");
+                    $el.removeClass("target-show");
+                    $el.addClass("target-hide");
 
                     setTimeout(function() {
                         // At the end of the animation timer remove classes
-                        $target.removeClass("active");
-                        $target.removeClass("target-hide");
+                        $el.removeClass("active");
+                        $el.removeClass("target-hide");
 
                         // Update a11y to describe as closed
                         $toggle.add($relatedToggles).attr("aria-expanded", "false");
                     }, animateTime);
                 },
-                show: function() {
+                show: function($el) {
+                    $el = $el || $target;
+
                     // Should set to display block
-                    $target.addClass("active");
+                    $el.addClass("active");
 
                     // CSS animation for show/hiding.
-                    $target.addClass("target-show");
+                    $el.addClass("target-show");
                 }
             }
 
@@ -137,22 +145,21 @@ if (/iPad|iPhone|iPod/g.test(navigator.userAgent)) {
                 $html.off("click touchstart keyup", checkOutsideClick);
 
                 if ( $target.hasClass("active") ) {
-                    $toggle.add($relatedToggles).removeClass("active");
+                    // If the current clicked element is a tab do nothing
+                    if  ( !$toggle.is("[data-expander-tabs]") ) {
+                        $toggle.add($relatedToggles).removeClass("active");
 
-                    // Removing class on wrapper element if it exists
-                    if (standAlone === true) $this.removeClass("active");
+                        // Removing class on wrapper element if it exists
+                        if (standAlone === true) $this.removeClass("active");
 
-                    // Removing class on html element for site overlay effects
-                    if ( isOverlay ) {
-                        $html.removeClass("js-data-toggled");
-                        $("html").removeClass("js-data-toggled-" + $target.attr("id"));
-                    }
+                        // Removing class on html element for site overlay effects
+                        if ( isOverlay ) {
+                            $html.removeClass("js-data-toggled");
+                            $("html").removeClass("js-data-toggled-" + $target.attr("id"));
+                        }
 
-                    // Show/hide animation depending on if you want to use CSS animations or not
-                    if ( useCss ) {
-                        cssAnimation.hide();
-                    } else {
-                        jsAnimation.hide();
+                        // Show/hide animation depending on if you want to use CSS animations or not
+                        useCss ? cssAnimation.hide() : jsAnimation.hide();
                     }
                 } else {
                     $toggle.add($relatedToggles).addClass("active");
@@ -166,12 +173,28 @@ if (/iPad|iPhone|iPod/g.test(navigator.userAgent)) {
                         $("html").addClass("js-data-toggled-" + $target.attr("id"));
                     }
 
-                    // Show/hide animation depending on if you want to use CSS animations or not
-                    if ( useCss ) {
-                        cssAnimation.show();
-                    } else {
-                        jsAnimation.show();
+                    // Hide other expanders if 'tabs' is enabled
+                    if  ( $toggle.is("[data-expander-tabs]") ) {
+                        var $otherTabs = $("[data-expander-tabs]").not($toggle);
+
+                        $otherTabs.each(function () {
+                            var $this = $(this),
+                                $newTarget;
+
+                            if ($this.data("expander").length > 0) {
+                                $newTarget = $("#" + $this.data("expander")).not($target);
+                            } else {
+                                $newTarget = $this.find("[data-expander-target]").not($target);
+                            }
+
+                            $this.not($relatedToggles).removeClass("active");
+
+                            useCss ? cssAnimation.hide($newTarget) : jsAnimation.hide($newTarget);
+                        });
                     }
+
+                    // Show/hide animation depending on if you want to use CSS animations or not
+                    useCss ? cssAnimation.show() : jsAnimation.show();
 
                     // Update a11y to describe as opened
                     $toggle.attr("aria-expanded", "true");

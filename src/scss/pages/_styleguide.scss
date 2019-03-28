@@ -73,3 +73,16 @@ html {
 
   &::before { content: none; }
 }
+
+.styleguide-tabs { display: flex; }
+.styleguide-tab {
+  display: none;
+  &.active {
+    border-color: red;
+  }
+}
+
+@media (min-width: 768px) {
+    .styleguide-tab { display: block; }
+    .styleguide-mob-tab { display: none; }
+}
