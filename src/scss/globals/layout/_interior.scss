@@ -1,51 +1,15 @@
+.interior-top {
+    margin: 0 0 15px;
+}
+
 .interior-content,
 .interior-rail {
     padding: 20px 0;
 }
 
-.page-header-inner {
-    display: flex;
-    justify-content: flex-start;
-    align-items: center;
-    min-height: 200px;
-    flex: 1 0 auto;
-    width: 100%; // IE Fix to wrap text
-}
-
-.page-header {
-    line-height: 1.2;
-    color: $color-invert;
-    text-transform: uppercase;
-    background-repeat: no-repeat;
-    background-position: center center;
-    background-size: cover;
-
-    .col-xs-12 {
-        display: flex; // Adding flex to parent to fix IE min-height bug
-    }
-}
-
-.page-header-big {
-    position: relative;
-    @include x-rem(font-size, 28px);
-    font-weight: bold;
-    background: rgba(0,0,0,0.7);
-    padding: 10px;
-    margin: 0;
-}
-
-@media (min-width: $bp-m) {
+@media (min-width: $bp-mw) {
     .interior-content,
     .interior-rail {
         padding: 50px 0;
-    }
-
-    .page-header-inner {
-        min-height: 275px;
-    }
-
-    .page-header-big {
-        @include x-rem(font-size, 60px);
-        padding: 10px 20px;
     }
 }
