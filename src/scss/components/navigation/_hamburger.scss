@@ -1,6 +1,6 @@
-$hamb-line-width: 30px;
-$hamb-line-height: 3px;
-$hamb-line-spacing: 10px;
+$hamb-width: 30px;
+$hamb-height: 30px;
+$hamb-line-height: 4px;
 $hamb-border-radius: 3px;
 $hamb-background: transparent;
 $hamb-lines-color: $color-primary;
@@ -13,9 +13,9 @@ $hamb-lines-color-hover: $color-secondary;
     padding: 0;
     border: 0;
     cursor: pointer;
-    transition-timing-function: linear;
-    transition-duration: .15s;
-    transition-property: opacity, -webkit-filter;
+    // transition-timing-function: linear;
+    // transition-duration: .15s;
+    // transition-property: opacity, -webkit-filter;
     background-color: $hamb-background;
     flex: 0 0 auto;
 
@@ -33,8 +33,8 @@ $hamb-lines-color-hover: $color-secondary;
 .hamburger-box {
     position: relative;
     display: inline-block;
-    width: $hamb-line-width;
-    height: ($hamb-line-spacing * 3);
+    width: $hamb-width;
+    height: $hamb-height;
     transition: all 0.2s ease-in-out;
 }
 
@@ -42,11 +42,11 @@ $hamb-lines-color-hover: $color-secondary;
 .hamburger-inner:after,
 .hamburger-inner:before {
     position: absolute;
-    width: $hamb-line-width;
+    width: $hamb-width;
     height: $hamb-line-height;
     border-radius: $hamb-border-radius;
     background: $hamb-lines-color;
-    transition-property: transform;
+    transition-property: transform, background;
 }
 
 .hamburger-inner {
@@ -54,8 +54,8 @@ $hamb-lines-color-hover: $color-secondary;
     left: 0;
     display: block;
     margin-top: -2px;
-    transition-timing-function: cubic-bezier(.55, .055, .675, .19);
-    transition-duration: 75ms;
+    transition-duration: 75ms, $trans-duration;
+    transition-timing-function: cubic-bezier(.55, .055, .675, .19), $trans-ease;
 }
 
 .hamburger-inner:after,
@@ -65,13 +65,13 @@ $hamb-lines-color-hover: $color-secondary;
 }
 
 .hamburger-inner:before {
-    top: -$hamb-line-spacing;
-    transition: top 75ms ease .12s, opacity 75ms ease;
+    top: -($hamb-height / 3 + ($hamb-line-height / 2));
+    transition: top 75ms ease .12s, opacity 75ms ease, background $trans-duration $trans-ease;
 }
 
 .hamburger-inner:after {
-    bottom: -$hamb-line-spacing;
-    transition: bottom 75ms ease .12s, transform 75ms cubic-bezier(.55, .055, .675, .19);
+    bottom: -($hamb-height / 3 + ($hamb-line-height / 2));
+    transition: bottom 75ms ease .12s, transform 75ms cubic-bezier(.55, .055, .675, .19), background $trans-duration $trans-ease;
 }
 
 .hamburger-menu.active {

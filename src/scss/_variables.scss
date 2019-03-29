@@ -46,8 +46,9 @@ $nav-mainLinkBackground: #666;
 $nav-subLinkBackground: #999;
 
 // Transitions
+$trans-duration: 0.18s;
+$trans-ease: ease-in-out;
 $trans: all 0.18s ease-in-out;
-$trans2: all 0.25s ease-in-out;
 
 // Grid
 $container-size: 89.375rem; // 1430px

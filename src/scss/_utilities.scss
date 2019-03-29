@@ -197,3 +197,16 @@ input {
     @media (min-width: $point) { @content; }
   }
 }
+
+
+/* ================================================================
+   FUNCTIONS
+   ================================================================ */
+
+// Get a straight px-to-rem value. Default base size 16px
+// usage: pxtorem(20px)
+
+@function pxtorem($size, $base: 16px) {
+  $remSize: $size / $base;
+  @return #{$remSize}rem;
+}
