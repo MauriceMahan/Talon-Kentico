@@ -25,6 +25,7 @@
 @import "globals/grid";
 
 // Layout Styles
+@import "globals/layout/base";
 @import "globals/layout/header";
 @import "globals/layout/interior";
 @import "globals/layout/footer";
@@ -38,15 +39,6 @@
 
 // Special
 @import "globals/animations";
-
-
-/* ================================================================
-   Templates
-   ================================================================ */
-
-// Base Template
-@import "templates/_base";
-
 
 /* ================================================================
    Component Imports - Comment/uncomment what you don't need/need.

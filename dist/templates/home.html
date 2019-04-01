@@ -98,7 +98,7 @@
     </div>
 </header>
 
-            <main id="site-main" role="main">
+            <main id="site-main" class="site-main" role="main">
                   
 <section id="maincontent" class="hero-slider-section" aria-label="Carousel">
     <button class="hero-slider-btn hero-slider-btn-prev">
@@ -170,73 +170,72 @@
         <script src="../js/all.js"></script> <!-- Use all.min.js on production sites -->
         <!-- Template listing for development only START -->
 <style>
-        .talon-templates-wrapper {
-            position: fixed;
-            top: 0;
-            left: -300px;
-            width: 300px;
-            background: #fff;
-            transition: all 0.2s ease-out;
-            border: 2px solid #000;
-            padding: 20px;
-            z-index: 9001;
-        }
+    .talon-templates-wrapper {
+        position: fixed;
+        top: 0;
+        left: -300px;
+        width: 300px;
+        background: #fff;
+        transition: all 0.2s ease-out;
+        border: 2px solid #000;
+        padding: 20px;
+        z-index: 9001;
+    }
 
-        .talon-templates-wrapper::before {
-            content: "Pages";
-            display: block;
-            position: absolute;
-            top: 10px;
-            left: 100%;
-            padding: 5px;
-            background: #fff;
-            border: 2px solid #000;
-            border-left: 1px solid #fff;
-            cursor: pointer;
-            font-size: 14px;
-        }
+    .talon-templates-wrapper::before {
+        content: "Pages";
+        display: block;
+        position: absolute;
+        top: 10px;
+        left: 100%;
+        padding: 5px;
+        background: #fff;
+        border: 2px solid #000;
+        border-left: 1px solid #fff;
+        cursor: pointer;
+        font-size: 14px;
+    }
 
-        .talon-templates-wrapper ul {
-            padding: 0;
-            margin: 0 0 10px;
-        }
+    .talon-templates-wrapper ul {
+        padding: 0;
+        margin: 0 0 10px;
+    }
 
-        .talon-templates-wrapper a {
-            display: inline-block;
-        }
+    .talon-templates-wrapper a {
+        display: inline-block;
+    }
 
-        .talon-templates-wrapper:hover,
-        .templates-wrapper:focus {
-            left: 0;
-        }
-    </style>
-    <div class="talon-templates-wrapper">
-        <ul>
+    .talon-templates-wrapper:hover,
+    .templates-wrapper:focus {
+        left: 0;
+    }
+</style>
+<div class="talon-templates-wrapper">
+    <ul>
+        
             
-                
-                <li><a href="home.html">Home</a></li>
+            <li><a href="home.html">Home</a></li>
+        
             
-                
-                <li><a href="one-column.html">One Column Template</a></li>
+            <li><a href="one-column.html">One Column Template</a></li>
+        
             
-                
-                <li><a href="styleguide.html">Styleguide</a></li>
+            <li><a href="styleguide.html">Styleguide</a></li>
+        
             
-                
-                <li><a href="two-column.html">Two Column Template</a></li>
-            
-        </ul>
-        <button id="talon-templates-hide">Hide</button>
-        <script>
-            // Styleguide has 2 of these on the same page
-            document.querySelectorAll('#talon-templates-hide').forEach(btn => {
-                btn.addEventListener('click', e => {
-                    // jQuery should be loaded by the time it's clicked
-                    $(e.target).closest('.talon-templates-wrapper').hide();
-                });
-            })
-        </script>
-    </div>
-    <!-- Template listing for development only END -->
+            <li><a href="two-column.html">Two Column Template</a></li>
+        
+    </ul>
+    <button class="talon-templates-hide">Hide</button>
+    <script>
+        // styleguide has 2 of these on the same page
+        window.addEventListener('load', function () {
+            $('.talon-templates-hide').on('click', function (e) {
+                $(e.target).closest('.talon-templates-wrapper').hide();
+            });
+        });
+    </script>
+</div>
+<!-- Template listing for development only END -->
 	</body>
 </html>

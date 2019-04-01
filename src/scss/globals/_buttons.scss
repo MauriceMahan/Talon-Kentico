@@ -8,14 +8,14 @@
 	padding:0.47em 1.2em;
 	border:0;
 	font-family:$font-primary; font-weight:$fontWeight-bold; color:$color-invert;
-	text-decoration:none; text-transform:uppercase; text-align:center;
+	text-decoration:none; text-align:center;
 	background:$color-primary;
 	cursor: pointer;
-	transition:all 0.2s ease-out;
+	transition: $trans;
 
 	&:hover, &:focus {
 		text-decoration:none;
-		background:#646464;
+		background:$color-secondary;
 	}
 }
 
