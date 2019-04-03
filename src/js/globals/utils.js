@@ -18,7 +18,6 @@ if (/iPad|iPhone|iPod/g.test(navigator.userAgent)) {
 (function ($, talonUtil, undefined) {
     "use strict";
 
-
     // Fast for most debouncers, etc. but for transitions try and match typicall css transition length
     talonUtil.speeds = {
         fast: 200,
@@ -34,6 +33,35 @@ if (/iPad|iPhone|iPod/g.test(navigator.userAgent)) {
             return baseStr + globalIdCounter++;
         };
     }();
+
+    // Initialize vendor plugins that requires little to no configuration
+    talonUtil.vendorPlugins = function() {
+        /** Cross browser SVG loading support **/
+        svg4everybody();
+
+        /** FocusOverlay **/
+        $("body").focusOverlay();
+
+        /** Lazy loading */
+        const bLazy = new Blazy({
+            loadInvisible: true,
+            offset: 200,
+            success: el => {
+                // For images that are wrapped in aspect ratio containers
+                if ($(el).parent().hasClass('lazy-aspect-ratio')) {
+                    $(el).parent().addClass('lazy-aspect-ratio-done');
+                }
+
+                // Adding another class for a non-instant CSS transitions
+                setTimeout(() => {
+                    el.classList.add('b-done');
+                }, talonUtil.speeds.long);
+            },
+            error: (el, msg) => {
+                console.log(msg, el);
+            }
+        });
+    }
 
     /**
      * Setup expanding functionality for [data-expander] elements (e.g. accordions,
@@ -394,7 +422,6 @@ if (/iPad|iPhone|iPod/g.test(navigator.userAgent)) {
             }, talonUtil.speeds.fast);
         }, false);
     };
-
 
     /** Click vs. Keyboard user **/
     talonUtil.setupUserBinds = function () {

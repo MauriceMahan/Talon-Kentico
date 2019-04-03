@@ -2,12 +2,6 @@
     /** Click Navigation **/
     $(".main-nav").clickMenu();
 
-    /** Cross browser SVG loading support **/
-    svg4everybody();
-
-    /** FocusOverlay **/
-    $("body").focusOverlay();
-
     $('.hero-slider-section').each(function () {
         const slider = this.querySelector('.hero-slider');
         const prev = this.querySelector('.hero-slider-btn-prev');
@@ -47,6 +41,7 @@
             .append("<span class='visually-hidden'>(Opens in a new window)</span>");
     });
 
+    talonUtil.vendorPlugins();
     talonUtil.setupToggles();
     talonUtil.setupScrollPointerBlocker();
     talonUtil.setupUserBinds();
